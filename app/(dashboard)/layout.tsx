@@ -1,4 +1,4 @@
-// import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar";
 // import { Sidebar } from "@/components/sidebar";
 // import { checkSubscription } from "@/lib/subscription";
 // import { getApiLimitCount } from "@/lib/api-limit";
@@ -18,9 +18,9 @@ const DashboardLayout = async ({
         Hello sidebar
       </div>
       <main className="md:pl-72 pb-10">
-        {/* <Navbar /> */}
+        <Navbar />
         hello main
-        {/* {children} */}
+        {children}
       </main>
     </div>
    );
