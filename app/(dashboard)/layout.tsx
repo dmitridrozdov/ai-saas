@@ -19,7 +19,6 @@ const DashboardLayout = async ({
       </div>
       <main className="md:pl-72 pb-10">
         <Navbar />
-        hello main
         {children}
       </main>
     </div>
