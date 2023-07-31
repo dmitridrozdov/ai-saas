@@ -16,17 +16,23 @@ const ConversationPage = () => {
         }
       });
 
-  return (
-    <div>
-        <Heading
-        title="Conversation"
-        description="Our most advanced conversation model."
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
-      />
-    </div>
-  )
+    const isLoading = form.formState.isSubmitting;
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        console.log('submit')
+    }
+
+    return (
+        <div>
+            <Heading
+            title="Conversation"
+            description="Our most advanced conversation model."
+            icon={MessageSquare}
+            iconColor="text-violet-500"
+            bgColor="bg-violet-500/10"
+        />
+        </div>
+    )
 }
 
 export default ConversationPage
