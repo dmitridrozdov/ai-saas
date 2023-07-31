@@ -1,8 +1,21 @@
-import React from 'react'
+"use client";
+
+import * as z from "zod";
 import { MessageSquare } from "lucide-react";
 import { Heading } from "@/components/heading";
+import { useForm } from "react-hook-form";
+import { formSchema } from "./constants";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const page = () => {
+const ConversationPage = () => {
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+          prompt: ""
+        }
+      });
+
   return (
     <div>
         <Heading
@@ -16,4 +29,4 @@ const page = () => {
   )
 }
 
-export default page
+export default ConversationPage
