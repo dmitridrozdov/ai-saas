@@ -2,6 +2,9 @@
 
 import * as z from "zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ChatCompletionRequestMessage } from "openai";
 import { MessageSquare } from "lucide-react";
 import { Heading } from "@/components/heading";
 import { useForm } from "react-hook-form";
@@ -12,6 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const ConversationPage = () => {
+    const router = useRouter();
+
+    const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -23,7 +29,24 @@ const ConversationPage = () => {
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log('submit')
+        try {
+            const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+            const newMessages = [...messages, userMessage];
+            
+            const response = await axios.post('/api/conversation', { messages: newMessages });
+            setMessages((current) => [...current, userMessage, response.data]);
+            
+            form.reset();
+          } catch (error: any) {
+            // if (error?.response?.status === 403) {
+            //   proModal.onOpen();
+            // } else {
+            //   toast.error("Something went wrong.");
+            // }
+            console.log(error)
+          } finally {
+            router.refresh();
+          }
     }
 
     return (
