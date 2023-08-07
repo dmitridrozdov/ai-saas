@@ -18,6 +18,9 @@ import { Loader } from "@/components/loader";
 import { Empty } from "@/components/ui/empty";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 
 const ConversationPage = () => {
     const router = useRouter();
@@ -60,8 +63,8 @@ const ConversationPage = () => {
                 title="Conversation"
                 description="Our most advanced conversation model."
                 icon={MessageSquare}
-                iconColor="text-violet-500"
-                bgColor="bg-violet-500/10"
+                iconColor="text-slate-100"
+                bgColor="bg-slate-300"
             />
              <div className="px-4 lg:px-8">
                 <div>
@@ -93,7 +96,7 @@ const ConversationPage = () => {
                 </div>
                 <div className="space-y-4 mt-4">
                     {isLoading && (
-                        <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+                        <div className="p-8 rounded-lg w-full flex items-center justify-center bg-slate-300">
                             <Loader />
                         </div>
                     )}
@@ -106,7 +109,7 @@ const ConversationPage = () => {
                             key={message.content} 
                             className={cn(
                             "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                            message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                            message.role === "user" ? "bg-white border border-black/10" : "bg-slate-200", montserrat.className
                             )}
                         >
                             {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
