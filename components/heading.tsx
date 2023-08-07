@@ -1,6 +1,10 @@
 import { LucideIcon } from "lucide-react";
+import { Montserrat } from 'next/font/google';
 
 import { cn } from "@/lib/utils";
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
+
 
 interface HeadingProps {
   title: string;
@@ -24,8 +28,8 @@ export const Heading = ({
           <Icon className={cn("w-10 h-10", iconColor)} />
         </div>
         <div>
-          <h2 className="text-3xl font-bold">{title}</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className={cn("text-3xl font-bold", montserrat.className)}>{title}</h2>
+          <p className={cn("text-sm text-muted-foreground", montserrat.className)}>
             {description}
           </p>
         </div>
