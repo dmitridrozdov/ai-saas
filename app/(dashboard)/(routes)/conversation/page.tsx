@@ -63,8 +63,8 @@ const ConversationPage = () => {
                 title="Conversation"
                 description="Our most advanced conversation model."
                 icon={MessageSquare}
-                iconColor="text-slate-100"
-                bgColor="bg-slate-300"
+                iconColor="text-black"
+                bgColor="bg-white"
             />
              <div className="px-4 lg:px-8">
                 <div>
