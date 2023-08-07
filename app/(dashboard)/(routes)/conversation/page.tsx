@@ -71,7 +71,7 @@ const ConversationPage = () => {
                     <Form {...form}>
                         <form 
                             onSubmit={form.handleSubmit(onSubmit)} 
-                            className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm
+                            className="rounded-sm border w-full p-4 px-3 md:px-6 focus-within:shadow-sm
                                 grid grid-cols-12 gap-2">
                          <FormField
                             name="prompt"
@@ -88,7 +88,7 @@ const ConversationPage = () => {
                             </FormItem>
                             )}
                         />
-                        <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
+                        <Button className={cn("col-span-12 lg:col-span-2 w-full", montserrat.className)} type="submit" disabled={isLoading} size="icon">
                             Generate
                         </Button>   
                         </form>
@@ -96,7 +96,7 @@ const ConversationPage = () => {
                 </div>
                 <div className="space-y-4 mt-4">
                     {isLoading && (
-                        <div className="p-8 rounded-lg w-full flex items-center justify-center bg-slate-300">
+                        <div className="p-8 rounded-sm w-full flex items-center justify-center bg-slate-300">
                             <Loader />
                         </div>
                     )}
@@ -108,7 +108,7 @@ const ConversationPage = () => {
                         <div 
                             key={message.content} 
                             className={cn(
-                            "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                            "p-8 w-full flex items-start gap-x-8 rounded-sm",
                             message.role === "user" ? "bg-white border border-black/10" : "bg-slate-200", montserrat.className
                             )}
                         >
