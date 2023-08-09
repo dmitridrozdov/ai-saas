@@ -60,10 +60,10 @@ const ConversationPage = () => {
     return (
         <div>
             <Heading
-                title="Conversation"
-                description="Our most advanced conversation model."
+                title="ChatGPT"
+                description="The most advanced conversation model."
                 icon={MessageSquare}
-                iconColor="text-black"
+                iconColor="text-slate-400"
                 bgColor="bg-white"
             />
              <div className="px-4 lg:px-8">
