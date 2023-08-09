@@ -14,16 +14,16 @@ const ubuntu = Kanit ({ weight: '700', subsets: ['latin']});
 
 const routes = [
   {
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    href: '/dashboard',
-    color: "text-sky-500"
-  },
-  {
-    label: 'Conversation',
+    label: 'ChatGPT',
     icon: MessageSquare,
     href: '/conversation',
     color: "text-sky-500",
+  },
+  {
+    label: 'Code Generation',
+    icon: Code,
+    color: "text-sky-500",
+    href: '/code',
   },
   {
     label: 'Image Generation',
@@ -42,12 +42,6 @@ const routes = [
     icon: Music,
     color: "text-sky-500",
     href: '/music',
-  },
-  {
-    label: 'Code Generation',
-    icon: Code,
-    color: "text-sky-500",
-    href: '/code',
   },
   {
     label: 'Settings',
