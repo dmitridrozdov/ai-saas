@@ -21,6 +21,11 @@ import { Loader } from "@/components/loader";
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 // import { useProModal } from "@/hooks/use-pro-modal";
+import { Montserrat, Source_Code_Pro, Kanit } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
+const sourcecodepro = Source_Code_Pro ({ weight: '300', subsets: ['latin'] });
+const kanit = Kanit ({ weight: '300', subsets: ['latin'] });
 
 import { formSchema } from "./constants";
 
@@ -109,7 +114,7 @@ const CodePage = () => {
         </div>
         <div className="space-y-4 mt-4">
           {isLoading && (
-            <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+            <div className="p-8 rounded-lg w-full flex items-center justify-center bg-white">
               <Loader />
             </div>
           )}
@@ -122,18 +127,18 @@ const CodePage = () => {
                 key={message.content} 
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                  message.role === "user" ? "bg-white border border-black/10" : "bg-slate-200", montserrat.className
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 <ReactMarkdown components={{
                   pre: ({ node, ...props }) => (
-                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
+                    <div className="overflow-auto w-full my-2 bg-white p-2 rounded-sm font-mono">
                       <pre {...props} />
                     </div>
                   ),
                   code: ({ node, ...props }) => (
-                    <code className="bg-black/10 rounded-lg p-1" {...props} />
+                    <code className={cn("bg-white rounded-sm p-1", kanit.className)} {...props} />
                   )
                 }} className="text-sm overflow-hidden leading-7">
                   {message.content || ""}
