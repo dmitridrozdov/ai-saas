@@ -65,7 +65,7 @@ const PhotoPage = () => {
         title="Image Generation"
         description="Turn your prompt into an image."
         icon={ImageIcon}
-        iconColor="text-pink-700"
+        iconColor="text-slate-400"
         bgColor="bg-pink-700/10"
       />
       <div className="px-4 lg:px-8">
@@ -93,7 +93,7 @@ const PhotoPage = () => {
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                       disabled={isLoading} 
-                      placeholder="A picture of a horse in Swiss alps" 
+                      placeholder="" 
                       {...field}
                     />
                   </FormControl>
