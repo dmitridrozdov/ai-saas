@@ -70,7 +70,7 @@ const CodePage = () => {
         title="Code Generation"
         description="Generate code using descriptive text."
         icon={Code}
-        iconColor="text-black"
+        iconColor="text-slate-400"
         bgColor="bg-white"
       />
       <div className="px-4 lg:px-8">
