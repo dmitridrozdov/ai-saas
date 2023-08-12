@@ -32,18 +32,6 @@ const routes = [
     href: '/image',
   },
   {
-    label: 'Video Generation',
-    icon: VideoIcon,
-    color: "text-slate-400",
-    href: '/video',
-  },
-  {
-    label: 'Music Generation',
-    icon: Music,
-    color: "text-slate-400",
-    href: '/music',
-  },
-  {
     label: 'Settings',
     icon: Settings,
     color: "text-slate-400",
