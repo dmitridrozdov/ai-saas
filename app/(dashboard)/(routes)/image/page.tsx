@@ -66,7 +66,7 @@ const PhotoPage = () => {
         description="Turn your prompt into an image."
         icon={ImageIcon}
         iconColor="text-slate-400"
-        bgColor="bg-pink-700/10"
+        bgColor="bg-white"
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
