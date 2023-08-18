@@ -7,6 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 // import { useProModal } from "@/hooks/use-pro-modal";
 
+
+import { Montserrat, Kanit } from 'next/font/google'
+import { cn } from "@/lib/utils";
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
+const kanit = Kanit ({ weight: '700', subsets: ['latin']});
+
 export const FreeCounter = ({
 //   isPro = false,
   apiLimitCount = 0,
@@ -34,16 +40,16 @@ export const FreeCounter = ({
     <div className="px-3">
       <Card className="bg-slate-200 border-0">
         <CardContent className="py-6">
-          <div className="text-center text-sm text-black mb-4 space-y-2">
+          <div className={cn("text-center text-sm text-black mb-4 space-y-2", montserrat.className)}>
             <p>
               {apiLimitCount} / {MAX_FREE_COUNTS} Free Generations
             </p>
             <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
           </div>
           {/* <Button onClick={proModal.onOpen} variant="premium" className="w-full"> */}
-          <Button variant="outline" className="w-full">
+          <Button variant="special" className={cn("w-full", montserrat.className)}>
             Upgrade
-            <Zap className="w-4 h-4 ml-2 fill-white" />
+            <Zap className="w-4 h-4 ml-2 fill-slate-300" />
           </Button>
         </CardContent>
       </Card>
