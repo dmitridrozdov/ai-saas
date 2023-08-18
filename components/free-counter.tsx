@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MAX_FREE_COUNTS } from "@/constants";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-// import { Progress } from "@/components/ui/progress";
+import { Progress } from "@/components/ui/progress";
 // import { useProModal } from "@/hooks/use-pro-modal";
 
 export const FreeCounter = ({
@@ -38,7 +38,7 @@ export const FreeCounter = ({
             <p>
               {apiLimitCount} / {MAX_FREE_COUNTS} Free Generations
             </p>
-            {/* <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} /> */}
+            <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
           </div>
           {/* <Button onClick={proModal.onOpen} variant="premium" className="w-full"> */}
           <Button variant="outline" className="w-full">
