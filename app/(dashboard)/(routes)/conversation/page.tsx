@@ -79,7 +79,7 @@ const ConversationPage = () => {
                             <FormItem className="col-span-12 lg:col-span-10">
                                 <FormControl className="m-0 p-0">
                                 <Input
-                                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                                    className={cn("border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent", montserrat.className)}
                                     disabled={isLoading} 
                                     placeholder="" 
                                     {...field}
