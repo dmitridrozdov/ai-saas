@@ -20,6 +20,10 @@ import { tools } from "@/constants";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
+
 export const ProModal = () => {
   const proModal = useProModal();
   const [loading, setLoading] = useState(false);
@@ -42,8 +46,8 @@ export const ProModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
-            <div className="flex items-center gap-x-2 font-bold text-xl">
-              Upgrade to Genius
+            <div className={cn("flex items-center gap-x-2 font-bold text-xl", montserrat.className)}>
+              Upgrade to IntelliAI
               <Badge variant="premium" className="uppercase text-sm py-1">
                 pro
               </Badge>
@@ -56,7 +60,7 @@ export const ProModal = () => {
                   <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
                     <tool.icon className={cn("w-6 h-6", tool.color)} />
                   </div>
-                  <div className="font-semibold text-sm">
+                  <div className={cn("font-semibold text-sm", montserrat.className)}>
                     {tool.label}
                   </div>
                 </div>
@@ -66,7 +70,7 @@ export const ProModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button disabled={loading} onClick={onSubscribe} size="lg" variant="premium" className="w-full">
+          <Button disabled={loading} onClick={onSubscribe} size="lg" variant="premium" className={cn("w-full", montserrat.className)}>
             Upgrade
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
