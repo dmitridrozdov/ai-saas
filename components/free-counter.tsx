@@ -40,7 +40,7 @@ export const FreeCounter = ({
         <CardContent className="py-6">
           <div className={cn("text-center text-sm text-white mb-4 space-y-2", montserrat.className)}>
             <p>
-              {apiLimitCount} / {MAX_FREE_COUNTS} Free Generations
+              {apiLimitCount} / {MAX_FREE_COUNTS} Free Requests
             </p>
             <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
           </div>
