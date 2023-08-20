@@ -10,6 +10,7 @@ import { MessageSquare } from "lucide-react";
 import { Heading } from "@/components/heading";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
+import { useProModal } from "@/hooks/use-pro-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 
 const ConversationPage = () => {
     const router = useRouter();
+    const proModal = useProModal();
 
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
@@ -46,11 +48,12 @@ const ConversationPage = () => {
             
             form.reset();
           } catch (error: any) {
-            // if (error?.response?.status === 403) {
-            //   proModal.onOpen();
-            // } else {
+            if (error?.response?.status === 403) {
+              proModal.onOpen();
+            } else {
             //   toast.error("Something went wrong.");
-            // }
+              console.log("Something went wrong.");
+            }
             console.log(error)
           } finally {
             router.refresh();
