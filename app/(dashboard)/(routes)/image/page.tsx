@@ -19,6 +19,10 @@ import { Loader } from "@/components/loader";
 import { Empty } from "@/components/ui/empty";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { cn } from "@/lib/utils";
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
 
@@ -92,7 +96,7 @@ const PhotoPage = () => {
                 <FormItem className="col-span-12 lg:col-span-6">
                   <FormControl className="m-0 p-0">
                     <Input
-                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                      className={cn("border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent",montserrat.className)}
                       disabled={isLoading} 
                       placeholder="" 
                       {...field}
