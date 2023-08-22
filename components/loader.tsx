@@ -1,4 +1,9 @@
 import Image from "next/image"
+import { cn } from "@/lib/utils";
+
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 
 export const Loader = () => {
   return (
@@ -10,7 +15,7 @@ export const Loader = () => {
           fill
         />
       </div>
-      <p className="text-sm text-muted-foreground">
+      <p className={cn("text-sm text-muted-foreground", montserrat.className)}>
         AI is thinking...
       </p>
     </div>
