@@ -45,7 +45,7 @@ export const FreeCounter = ({
             <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
           </div>
           <Button onClick={proModal.onOpen} variant="premium" className={cn("w-full", montserrat.className)}>
-            Upgradee
+            Upgrade
             <Zap className="w-4 h-4 ml-2 fill-slate-300" />
           </Button>
         </CardContent>
