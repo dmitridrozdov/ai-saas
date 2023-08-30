@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -51,8 +52,7 @@ const ConversationPage = () => {
             if (error?.response?.status === 403) {
               proModal.onOpen();
             } else {
-            //   toast.error("Something went wrong.");
-              console.log("Something went wrong.");
+              toast.error("Something went wrong.");
             }
             console.log(error)
           } finally {
