@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { FreeCounter } from "@/components/free-counter";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
-const ubuntu = Kanit ({ weight: '700', subsets: ['latin']});
+const kanit = Kanit ({ weight: '700', subsets: ['latin']});
 
 const routes = [
   {
@@ -55,7 +55,7 @@ export const Sidebar = ({
           <div className="relative h-8 w-8 mr-4">
             <Image fill alt="Logo" src="/logo.png" />
           </div>
-          <h1 className={cn("text-3xl font-bold", ubuntu.className)}>
+          <h1 className={cn("text-3xl font-bold", kanit.className)}>
             IntelliAI
           </h1>
         </Link>
