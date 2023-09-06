@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Montserrat, Kanit } from 'next/font/google'
-import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
+import { Code, ImageIcon, MessageSquare, Settings, CheckCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -13,6 +13,13 @@ const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '700', subsets: ['latin']});
 
 const routes = [
+  {
+    label: 'Grammar Genie',
+    icon: CheckCircle,
+    href: '/grammar',
+    color: "text-slate-400",
+    bgColor: "bg-white",
+  },
   {
     label: 'ChatGPT',
     icon: MessageSquare,
