@@ -1,8 +1,15 @@
-import { Code, ImageIcon, MessageSquare } from "lucide-react";
+import { Code, ImageIcon, MessageSquare, CheckCircle } from "lucide-react";
 
 export const MAX_FREE_COUNTS = 10;
 
 export const tools = [
+  {
+    label: 'Grammar Genie',
+    icon: CheckCircle,
+    href: '/grammar',
+    color: "text-slate-400",
+    bgColor: "bg-white",
+  },
   {
     label: 'ChatGPT',
     icon: MessageSquare,
