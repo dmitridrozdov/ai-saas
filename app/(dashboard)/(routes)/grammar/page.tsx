@@ -29,6 +29,8 @@ const ConversationPage = () => {
     const proModal = useProModal();
 
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+    const [result, setResult] = useState('')
+    const [rephrase, setRepharse] = useState('')
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,9 +47,10 @@ const ConversationPage = () => {
             const newMessages = [...messages, userMessage];
             
             const response = await axios.post('/api/grammar', { messages: newMessages });
-            setMessages((current) => [...current, userMessage, response.data]);
+            // setMessages((current) => [...current, userMessage, response.data]);
+            setResult(response.data.content)
             
-            form.reset();
+            // form.reset();
           } catch (error: any) {
             if (error?.response?.status === 403) {
               proModal.onOpen();
@@ -58,6 +61,10 @@ const ConversationPage = () => {
           } finally {
             router.refresh();
           }
+    }
+
+    const onClear = async (values: z.infer<typeof formSchema>) => {
+        form.reset()
     }
 
     return (
@@ -91,9 +98,14 @@ const ConversationPage = () => {
                             </FormItem>
                             )}
                         />
-                        <Button className={cn("col-span-12 lg:col-span-2 w-full", montserrat.className)} type="submit" disabled={isLoading} size="icon">
-                            Generate
-                        </Button>   
+                        <div className={cn("col-span-12 lg:col-span-2 w-full flex", montserrat.className)} >
+                            <Button type="submit" disabled={isLoading} size="icon" className="flex-grow mr-1">
+                                Verify
+                            </Button> 
+                            <Button variant='destructive' onClick={form.handleSubmit(onClear)} disabled={isLoading} size="icon" className="flex-grow ml-2">
+                                Clear
+                            </Button>   
+                        </div>
                         </form>
                     </Form>
                 </div>
@@ -103,7 +115,14 @@ const ConversationPage = () => {
                             <Loader />
                         </div>
                     )}
-                    {messages.length === 0 && !isLoading && (
+                    {!isLoading && (
+                        <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-200", montserrat.className)}>
+                            <p className="text-sm">
+                                {result}
+                            </p>
+                        </div>
+                    )}
+                    {/* {messages.length === 0 && !isLoading && (
                         <Empty label="" />
                     )}
                     <div className="flex flex-col-reverse gap-y-4">
@@ -121,8 +140,8 @@ const ConversationPage = () => {
                             </p>
                         </div>
                         ))}
-                    </div>
-                    </div>
+                    </div> */}
+                </div>
             </div>
         </div>
     )
