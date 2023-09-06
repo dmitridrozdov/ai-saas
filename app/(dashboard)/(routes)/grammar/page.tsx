@@ -48,7 +48,11 @@ const ConversationPage = () => {
             
             const response = await axios.post('/api/grammar', { messages: newMessages });
             // setMessages((current) => [...current, userMessage, response.data]);
-            setResult(response.data.content)
+
+            const parts = response.data.content.split("Task 2:");
+
+            setResult(parts[0].trim())
+            if(parts.length > 1) setRepharse(parts[1].trim())
             
             // form.reset();
           } catch (error: any) {
@@ -116,10 +120,17 @@ const ConversationPage = () => {
                         </div>
                     )}
                     {!isLoading && (
-                        <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-200", montserrat.className)}>
-                            <p className="text-sm">
-                                {result}
-                            </p>
+                        <div>       
+                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-200", montserrat.className)}>
+                                <p className="text-sm">
+                                    {result}
+                                </p>
+                            </div>
+                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-200", montserrat.className)}>
+                                <p className="text-sm">
+                                    {rephrase}
+                                </p>
+                            </div>
                         </div>
                     )}
                     {/* {messages.length === 0 && !isLoading && (
