@@ -13,7 +13,8 @@ const openai = new OpenAIApi(configuration);
 
 const instructionMessage: ChatCompletionRequestMessage = {
   role: "system",
-  content: "You are a professional grammar check. Please check the grammar and provide separate rephrases for the following text three times."
+  // content: "Task 1: Grammar Check Task 2: Rephrasing 3 times Task 3: Provide Grammar Assessment Please provide this | between each response"
+  content: "Task1 : Correct English sentence; Task 2: Rephrase three times"
 };
 
 export async function POST(
