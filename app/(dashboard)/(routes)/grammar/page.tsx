@@ -121,12 +121,12 @@ const ConversationPage = () => {
                     )}
                     {!isLoading && (
                         <div>       
-                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-200", montserrat.className)}>
+                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
                                 <p className="text-sm">
                                     {result}
                                 </p>
                             </div>
-                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-200", montserrat.className)}>
+                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
                                 <p className="text-sm">
                                     {rephrase}
                                 </p>
