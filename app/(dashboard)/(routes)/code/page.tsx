@@ -127,7 +127,7 @@ const CodePage = () => {
                 key={message.content} 
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user" ? "bg-white border border-black/10" : "bg-slate-200", montserrat.className
+                  message.role === "user" ? "bg-white border border-black/10 shadow-sm" : "bg-slate-100 border border-black/10 shadow-sm", montserrat.className
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
