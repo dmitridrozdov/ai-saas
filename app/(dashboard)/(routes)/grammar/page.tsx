@@ -30,7 +30,7 @@ const ConversationPage = () => {
 
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const [result, setResult] = useState('')
-    const [rephrase, setRepharse] = useState('')
+    const [rephrases, setRepharses] = useState<string[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -41,6 +41,23 @@ const ConversationPage = () => {
 
     const isLoading = form.formState.isSubmitting;
 
+    const prepareResult = (originalString:string) => {
+        const prefixesToCheck = ["Task 1:", "Corrected sentence:", "Corrected English sentence:", "Corrected Sentence:",];
+
+        for (const prefix of prefixesToCheck) {
+          if (originalString.startsWith(prefix)) {
+            return originalString.slice(prefix.length).trim();
+          }
+        }
+      
+        // If no prefix matches, return the original string
+        return originalString.trim();
+    }
+
+    const parseRephrases = (str:string) => {
+        return str.replace(/^:/, '').split(/1\.|2\.|3\./).map(item => item.trim()).filter(item => item !== '')
+    }
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
@@ -49,10 +66,14 @@ const ConversationPage = () => {
             const response = await axios.post('/api/grammar', { messages: newMessages });
             // setMessages((current) => [...current, userMessage, response.data]);
 
-            const parts = response.data.content.split("Task 2:");
+            const parts = response.data.content.split("Task 2");
 
-            setResult(parts[0].trim())
-            if(parts.length > 1) setRepharse(parts[1].trim())
+            setResult(prepareResult(parts[0]))
+            if(parts.length > 1) {
+                const rephraseArray = parseRephrases(parts[1].trim())
+                setRepharses(rephraseArray)
+                // setRepharses(['bla', 'ttta', 'pppp'])
+            }
             
             // form.reset();
           } catch (error: any) {
@@ -69,6 +90,8 @@ const ConversationPage = () => {
 
     const onClear = async (values: z.infer<typeof formSchema>) => {
         form.reset()
+        setResult('')
+        setRepharses([])
     }
 
     return (
@@ -119,18 +142,20 @@ const ConversationPage = () => {
                             <Loader />
                         </div>
                     )}
-                    {!isLoading && (
-                        <div>       
+                    {!isLoading && result !== '' && (
+                        <div className="flex flex-col gap-y-4">       
                             <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
                                 <p className="text-sm">
                                     {result}
                                 </p>
                             </div>
-                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
-                                <p className="text-sm">
-                                    {rephrase}
-                                </p>
-                            </div>
+                            {rephrases.map(rephrase => (
+                                <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
+                                    <p className="text-sm">
+                                        {rephrase}
+                                    </p>
+                                </div>
+                            ))}
                         </div>
                     )}
                     {/* {messages.length === 0 && !isLoading && (
