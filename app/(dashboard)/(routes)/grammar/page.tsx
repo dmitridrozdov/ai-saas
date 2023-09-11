@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChatCompletionRequestMessage } from "openai";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Copy, Check } from "lucide-react";
 import { Heading } from "@/components/heading";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -17,16 +17,15 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/loader";
-import { Empty } from "@/components/ui/empty";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
-import { Montserrat } from 'next/font/google';
+import { Montserrat, Kanit } from 'next/font/google';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
+const kanit = Kanit ({ weight: '100', subsets: ['latin']});
 
 const ConversationPage = () => {
     const router = useRouter();
     const proModal = useProModal();
+    const [isClick, setIsClick] = useState(false);
 
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const [result, setResult] = useState('')
@@ -64,7 +63,6 @@ const ConversationPage = () => {
             const newMessages = [...messages, userMessage];
             
             const response = await axios.post('/api/grammar', { messages: newMessages });
-            // setMessages((current) => [...current, userMessage, response.data]);
 
             const parts = response.data.content.split("Task 2");
 
@@ -72,10 +70,7 @@ const ConversationPage = () => {
             if(parts.length > 1) {
                 const rephraseArray = parseRephrases(parts[1].trim())
                 setRepharses(rephraseArray)
-                // setRepharses(['bla', 'ttta', 'pppp'])
             }
-            
-            // form.reset();
           } catch (error: any) {
             if (error?.response?.status === 403) {
               proModal.onOpen();
@@ -93,6 +88,16 @@ const ConversationPage = () => {
         setResult('')
         setRepharses([])
     }
+
+    const copyToClipBoard = async (textToCopy:string) => {
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          setIsClick(true);
+          setTimeout(() => {setIsClick(false)}, 3000); // Reset after 3 seconds
+        } catch (err) {
+          setIsClick(false);
+        }
+      }
 
     return (
         <div>
@@ -143,40 +148,35 @@ const ConversationPage = () => {
                         </div>
                     )}
                     {!isLoading && result !== '' && (
-                        <div className="flex flex-col gap-y-4">       
+                        <div className="flex flex-col gap-y-4">
+                             {result === '' ? <></> : <p className={cn("text-sm text-blue-500", kanit.className)}>Correct</p>}      
                             <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
                                 <p className="text-sm">
                                     {result}
                                 </p>
+                                <span style={{ marginLeft: 'auto' }}>
+                                    <div onClick={() => copyToClipBoard(result)}>
+                                        {isClick ? <Check size={20} color="grey" /> : <Copy size={20} color="grey" />}
+                                    </div>
+                                </span>
                             </div>
+                            {result === '' ? <></> : <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties</p>}  
                             {rephrases.map(rephrase => (
-                                <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
+                                <div 
+                                    key={rephrase} 
+                                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
                                     <p className="text-sm">
                                         {rephrase}
                                     </p>
+                                    <span style={{ marginLeft: 'auto' }}>
+                                    {/* <div onClick={() => copyToClipBoard(rephrase)}>
+                                        {isClick ? <Check size={20} color="grey" /> : <Copy size={20} color="grey" />}
+                                    </div> */}
+                                    </span>
                                 </div>
                             ))}
                         </div>
                     )}
-                    {/* {messages.length === 0 && !isLoading && (
-                        <Empty label="" />
-                    )}
-                    <div className="flex flex-col-reverse gap-y-4">
-                        {messages.map((message) => (
-                        <div 
-                            key={message.content} 
-                            className={cn(
-                            "p-8 w-full flex items-start gap-x-8 rounded-sm",
-                            message.role === "user" ? "bg-white border border-black/10" : "bg-slate-200", montserrat.className
-                            )}
-                        >
-                            {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                            <p className="text-sm">
-                                {message.content}
-                            </p>
-                        </div>
-                        ))}
-                    </div> */}
                 </div>
             </div>
         </div>
