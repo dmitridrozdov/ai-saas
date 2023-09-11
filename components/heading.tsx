@@ -1,10 +1,8 @@
 import { LucideIcon } from "lucide-react";
 import { Montserrat } from 'next/font/google';
-
 import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
-
 
 interface HeadingProps {
   title: string;
