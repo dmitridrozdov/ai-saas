@@ -26,7 +26,6 @@ const kanit = Kanit ({ weight: '100', subsets: ['latin']});
 const ConversationPage = () => {
     const router = useRouter();
     const proModal = useProModal();
-    // const [isClick, setIsClick] = useState(false);
 
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const [result, setResult] = useState('')
@@ -41,18 +40,34 @@ const ConversationPage = () => {
 
     const isLoading = form.formState.isSubmitting;
 
-    const prepareResult = (originalString:string) => {
-        const prefixesToCheck = ["Task 1:", "Corrected sentence:", "Corrected English sentence:", "Corrected Sentence:",];
-
+    const prepareResult = (originalString: string): string => {
+        const prefixesToCheck = [
+          "Task 1:",
+          "Corrected sentence:",
+          "Corrected English sentence:",
+          "Corrected Sentence:",
+        ];
+      
+        // Find the first matching prefix (including optional ":")
         for (const prefix of prefixesToCheck) {
-          if (originalString.startsWith(prefix)) {
-            return originalString.slice(prefix.length).trim();
+          if (
+            originalString.startsWith(prefix) ||
+            originalString.startsWith(prefix.slice(0, -1))
+          ) {
+            // Slice the matched prefix (including optional ":") and trim the result
+            const resultWithoutPrefix = originalString
+              .slice(prefix.length)
+              .trimStart();
+      
+            // Recursively check for additional prefixes
+            return prepareResult(resultWithoutPrefix);
           }
         }
       
         // If no prefix matches, return the original string
         return originalString.trim();
-    }
+      };
+      
 
     const parseRephrases = (str:string) => {
         return str.replace(/^:/, '').split(/1\.|2\.|3\./).map(item => item.trim()).filter(item => item !== '')
