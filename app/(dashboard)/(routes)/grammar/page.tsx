@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChatCompletionRequestMessage } from "openai";
-import { CheckCircle, Copy, Check } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Heading } from "@/components/heading";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/loader";
 import { Montserrat, Kanit } from 'next/font/google';
+import { CopyIcon } from '@/components/copy-icon'
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '100', subsets: ['latin']});
@@ -25,7 +26,7 @@ const kanit = Kanit ({ weight: '100', subsets: ['latin']});
 const ConversationPage = () => {
     const router = useRouter();
     const proModal = useProModal();
-    const [isClick, setIsClick] = useState(false);
+    // const [isClick, setIsClick] = useState(false);
 
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const [result, setResult] = useState('')
@@ -89,16 +90,6 @@ const ConversationPage = () => {
         setRepharses([])
     }
 
-    const copyToClipBoard = async (textToCopy:string) => {
-        try {
-          await navigator.clipboard.writeText(textToCopy);
-          setIsClick(true);
-          setTimeout(() => {setIsClick(false)}, 3000); // Reset after 3 seconds
-        } catch (err) {
-          setIsClick(false);
-        }
-      }
-
     return (
         <div>
             <Heading
@@ -155,9 +146,7 @@ const ConversationPage = () => {
                                     {result}
                                 </p>
                                 <span style={{ marginLeft: 'auto' }}>
-                                    <div onClick={() => copyToClipBoard(result)}>
-                                        {isClick ? <Check size={20} color="grey" /> : <Copy size={20} color="grey" />}
-                                    </div>
+                                    <CopyIcon result={result} />
                                 </span>
                             </div>
                             {result === '' ? <></> : <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties</p>}  
@@ -169,9 +158,7 @@ const ConversationPage = () => {
                                         {rephrase}
                                     </p>
                                     <span style={{ marginLeft: 'auto' }}>
-                                    {/* <div onClick={() => copyToClipBoard(rephrase)}>
-                                        {isClick ? <Check size={20} color="grey" /> : <Copy size={20} color="grey" />}
-                                    </div> */}
+                                        <CopyIcon result={rephrase} />
                                     </span>
                                 </div>
                             ))}
