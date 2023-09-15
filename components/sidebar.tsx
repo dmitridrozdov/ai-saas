@@ -62,7 +62,7 @@ export const Sidebar = ({
           <div className="relative h-8 w-8 mr-4">
             <Image fill alt="Logo" src="/logo.png" />
           </div>
-          <h1 className={cn("text-3xl font-bold", kanit.className)}>
+          <h1 className={cn("text-3xl bg-gradient-to-b from-gray-100 via-gray-500 to-black text-transparent bg-clip-text", kanit.className)}>
             IntelliAI
           </h1>
         </Link>
