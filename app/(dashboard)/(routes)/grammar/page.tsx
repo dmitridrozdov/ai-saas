@@ -109,7 +109,7 @@ const ConversationPage = () => {
         <div>
             <Heading
                 title="Grammar Genie"
-                description="The most advanced conversation model."
+                description="Your personal writing coach for impeccable grammar and flawless writing."
                 icon={CheckCircle}
                 iconColor="text-slate-400"
                 bgColor="bg-white"
