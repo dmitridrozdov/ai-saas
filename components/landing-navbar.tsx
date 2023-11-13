@@ -15,7 +15,7 @@ export const LandingNavbar = () => {
     <nav className="p-4 bg-transparent flex items-center justify-between">
       <Link href="/" className="flex items-center">
         <div className="relative h-8 w-8 mr-4">
-          <Image fill alt="Logo" src="/logo.png" />
+          <Image fill alt="Logo" src="/logoNew.png" />
         </div>
         <h1 className={cn("text-3xl bg-gradient-to-b from-gray-100 via-gray-500 to-black text-transparent bg-clip-text", kanit.className)}>
           IntelliAI
