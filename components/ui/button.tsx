@@ -19,6 +19,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         premium: "bg-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-800 text-white border-0",
+        verify: "bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 text-white border-0 hover:bg-gradient-to-r hover:from-purple-600 hover:via-purple-700 hover:to-purple-800",
+        clear: "bg-gradient-to-r from-red-400 via-red-500 to-red-600 text-white border-0 hover:bg-gradient-to-r hover:from-red-500 hover:via-red-600 hover:to-red-700",
       },
       size: {
         default: "h-10 px-4 py-2",
