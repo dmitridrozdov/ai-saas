@@ -137,10 +137,10 @@ const ConversationPage = () => {
                             )}
                         />
                         <div className={cn("col-span-12 lg:col-span-2 w-full flex", montserrat.className)} >
-                            <Button type="submit" disabled={isLoading} size="icon" className="flex-grow mr-1">
+                            <Button variant = 'verify' type="submit" disabled={isLoading} size="icon" className="flex-grow mr-1">
                                 Verify
                             </Button> 
-                            <Button variant='destructive' onClick={form.handleSubmit(onClear)} disabled={isLoading} size="icon" className="flex-grow ml-2">
+                            <Button variant='clear' onClick={form.handleSubmit(onClear)} disabled={isLoading} size="icon" className="flex-grow ml-2">
                                 Clear
                             </Button>   
                         </div>
