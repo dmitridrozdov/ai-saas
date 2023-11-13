@@ -106,7 +106,7 @@ const CodePage = () => {
                   </FormItem>
                 )}
               />
-              <Button className={cn("col-span-12 lg:col-span-2 w-full", montserrat.className)} type="submit" disabled={isLoading} size="icon">
+              <Button variant='verify' className={cn("col-span-12 lg:col-span-2 w-full", montserrat.className)} type="submit" disabled={isLoading} size="icon">
                 Generate
               </Button>
             </form>
