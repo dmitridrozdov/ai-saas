@@ -62,15 +62,8 @@ const PriceRadar = () => {
     const fetchColesPrice = async (coleslink: string) => {
       try {
         if(coleslink === '') return '-'
-    
+
         const res = await fetch(coleslink, { method: 'GET', mode: 'cors' });
-        // const proxyUrl = '/.netlify/functions/proxy?url=' + encodeURIComponent(coleslink);
-        // const res = await fetch(proxyUrl);
-        // console.log(proxyUrl)
-    
-        // console.log('Response Status:', res.status);
-        // console.log('Response Headers:', res.headers);
-    
         const html = await res.text();
         const root = parse(html);
         const selectedElement = root.querySelector('.price__value');
