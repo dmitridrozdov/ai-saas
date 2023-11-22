@@ -44,6 +44,12 @@ const routes = [
     color: "text-slate-400",
     href: '/settings',
   },
+  {
+    label: 'Price Radar POC',
+    icon: Settings,
+    color: "text-slate-400",
+    href: '/priceradar',
+  },
 ];
 
 export const Sidebar = ({
