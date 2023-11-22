@@ -32,10 +32,9 @@ const products = [
 
 
 
-const page = () => {
+const PriceRadar = () => {
 
     const [productsWithPrices, setProductsWithPrices]= useState<Array<{ wid: string; product: string; price: any; usualprice: string; colesprice: string; }>>([]);
-
 
     const fetchAllWoolisPrices = async () => {
       try {
@@ -101,4 +100,4 @@ const page = () => {
   )
 }
 
-export default page
+export default PriceRadar
