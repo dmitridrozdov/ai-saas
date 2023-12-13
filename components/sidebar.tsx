@@ -45,10 +45,10 @@ const routes = [
     href: '/settings',
   },
   {
-    label: 'Price Radar POC',
+    label: 'Prediction POC',
     icon: Settings,
     color: "text-slate-400",
-    href: '/priceradar',
+    href: '/prediction',
   },
 ];
 
