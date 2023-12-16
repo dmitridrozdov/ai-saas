@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>Prediction POC</div>
+    <div>page</div>
   )
 }
 
