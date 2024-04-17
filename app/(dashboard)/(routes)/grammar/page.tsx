@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/loader";
 import { Montserrat, Kanit } from 'next/font/google';
 import { CopyIcon } from '@/components/copy-icon'
+import Markdown from "@/components/markdown";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '100', subsets: ['latin']});
@@ -27,9 +28,10 @@ const ConversationPage = () => {
     const router = useRouter();
     const proModal = useProModal();
 
-    const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+    const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
     const [result, setResult] = useState('')
-    const [rephrases, setRepharses] = useState<string[]>([]);
+    const [rephrases, setRepharses] = useState<string[]>([])
+    const [geminiResult, setGeminiResult] = useState('')
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -73,6 +75,35 @@ const ConversationPage = () => {
         return str.replace(/^:/, '').split(/1\.|2\.|3\./).map(item => item.trim()).filter(item => item !== '')
     }
 
+    function removeBetweenStars(text: string): string[] {
+        // Split the text by lines, handling potential empty lines
+        const lines = text.split("\n").filter((line) => line.trim() !== "");
+      
+        const result: string[] = [];
+        let currentLine = "";
+      
+        for (const line of lines) {
+          // Check for lines starting or ending with double asterisks
+          if (line.startsWith("**") || line.endsWith("**")) {
+            // Add the current accumulated line (if not empty) before starting a new one
+            if (currentLine.trim() !== "") {
+              result.push(currentLine.trim());
+              currentLine = "";
+            }
+          } else {
+            // Append trimmed content to the current line
+            currentLine += line.trim() + " ";
+          }
+        }
+      
+        // Add the final accumulated line (if not empty)
+        if (currentLine.trim() !== "") {
+          result.push(currentLine.trim());
+        }
+      
+        return result;
+    }
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
@@ -80,7 +111,9 @@ const ConversationPage = () => {
             
             const response = await axios.post('/api/grammargemini', { messages: newMessages });
 
-            console.log(response.data.content)
+            // console.log(response.data.content)
+            setGeminiResult(response.data.content)
+            // console.log(removeBetweenStars(response.data.content))
 
           } catch (error: any) {
             if (error?.response?.status === 403) {
@@ -173,6 +206,11 @@ const ConversationPage = () => {
                     </Form>
                 </div>
                 <div className="space-y-4 mt-4">
+                    {!isLoading && geminiResult !== '' && (
+                        <Markdown text={geminiResult} />
+                    )}
+                </div>                   
+                <div className="space-y-4 mt-4">
                     {isLoading && (
                         <div className="p-8 rounded-sm w-full flex items-center justify-center bg-white">
                             <Loader />
@@ -204,6 +242,7 @@ const ConversationPage = () => {
                             ))}
                         </div>
                     )}
+                    
                 </div>
             </div>
         </div>
