@@ -21,8 +21,8 @@ import { Montserrat, Kanit } from 'next/font/google';
 import { CopyIcon } from '@/components/copy-icon'
 import Markdown from "@/components/markdown";
 
-const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
-const kanit = Kanit ({ weight: '100', subsets: ['latin']});
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
+const kanit = Kanit ({ weight: '100', subsets: ['latin']})
 
 const ConversationPage = () => {
     const router = useRouter();
