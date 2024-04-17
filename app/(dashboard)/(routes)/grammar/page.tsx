@@ -32,6 +32,7 @@ const ConversationPage = () => {
     const [result, setResult] = useState('')
     const [rephrases, setRepharses] = useState<string[]>([])
     const [geminiResult, setGeminiResult] = useState('')
+    const [geminiResultList, setGeminiResultList] = useState<string[]>([])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -75,33 +76,30 @@ const ConversationPage = () => {
         return str.replace(/^:/, '').split(/1\.|2\.|3\./).map(item => item.trim()).filter(item => item !== '')
     }
 
-    function removeBetweenStars(text: string): string[] {
+    const removeNumberedPrefix = (text: string): string => {
+        // Regular expression to match numbered prefixes (1., 2., or 3.)
+        const regex = /^(\d+)\./;
+        const match = regex.exec(text);
+      
+        // If a match is found, return the text after the prefix
+        if (match) {
+          return text.slice(match[1].length + 1); // +1 to include the dot
+        }
+      
+        // Otherwise, return the original text
+        return text;
+      }
+
+    const removeTextBetweenStars = (text: string): string => {
+        // Use a regular expression to match everything between two asterisks (**)
+        const regex = /\*\*(.*?)\*\*/g;
+        return text.replace(regex, "");
+    }
+
+    const removeBetweenStars = (text: string): string[] => {
         // Split the text by lines, handling potential empty lines
         const lines = text.split("\n").filter((line) => line.trim() !== "");
-      
-        const result: string[] = [];
-        let currentLine = "";
-      
-        for (const line of lines) {
-          // Check for lines starting or ending with double asterisks
-          if (line.startsWith("**") || line.endsWith("**")) {
-            // Add the current accumulated line (if not empty) before starting a new one
-            if (currentLine.trim() !== "") {
-              result.push(currentLine.trim());
-              currentLine = "";
-            }
-          } else {
-            // Append trimmed content to the current line
-            currentLine += line.trim() + " ";
-          }
-        }
-      
-        // Add the final accumulated line (if not empty)
-        if (currentLine.trim() !== "") {
-          result.push(currentLine.trim());
-        }
-      
-        return result;
+        return lines.map(line => removeTextBetweenStars(line)).filter(line => line.trim() !== "")
     }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -111,9 +109,8 @@ const ConversationPage = () => {
             
             const response = await axios.post('/api/grammargemini', { messages: newMessages });
 
-            // console.log(response.data.content)
             setGeminiResult(response.data.content)
-            // console.log(removeBetweenStars(response.data.content))
+            setGeminiResultList(removeBetweenStars(response.data.content))
 
           } catch (error: any) {
             if (error?.response?.status === 403) {
@@ -158,6 +155,8 @@ const ConversationPage = () => {
         form.reset()
         setResult('')
         setRepharses([])
+        setGeminiResult('')
+        setGeminiResultList([])
     }
 
     return (
@@ -209,6 +208,40 @@ const ConversationPage = () => {
                     {!isLoading && geminiResult !== '' && (
                         <Markdown text={geminiResult} />
                     )}
+                    {!isLoading && geminiResult !== '' && (
+                        <div className="flex flex-col gap-y-4">
+                            <p className={cn("text-sm text-blue-500", kanit.className)}>Correct Gemini</p>
+                            <div className="flex flex-col gap-y-4">
+                                <div 
+                                    key={geminiResultList[0]} 
+                                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-violet-50 border border-black/10 shadow-sm", montserrat.className)}>
+                                    <p className="text-sm">
+                                        {geminiResultList[0]}
+                                    </p>
+                                    <span style={{ marginLeft: 'auto' }}>
+                                        <CopyIcon result={geminiResultList[0]} />
+                                    </span>
+                                </div>
+                            </div>
+                            <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties Gemini</p>
+                            <div className="flex flex-col gap-y-4">
+                                {geminiResultList.slice(1)
+                                .map(res => removeNumberedPrefix(res))
+                                .map(gresult => (
+                                    <div 
+                                        key={gresult} 
+                                        className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-violet-50 border border-black/10 shadow-sm", montserrat.className)}>
+                                        <p className="text-sm">
+                                            {gresult}
+                                        </p>
+                                        <span style={{ marginLeft: 'auto' }}>
+                                            <CopyIcon result={gresult} />
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>                   
                 <div className="space-y-4 mt-4">
                     {isLoading && (
@@ -218,8 +251,8 @@ const ConversationPage = () => {
                     )}
                     {!isLoading && result !== '' && (
                         <div className="flex flex-col gap-y-4">
-                             {result === '' ? <></> : <p className={cn("text-sm text-blue-500", kanit.className)}>Correct</p>}      
-                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
+                             {result === '' ? <></> : <p className={cn("text-sm text-blue-500", kanit.className)}>Correct OpenAI</p>}      
+                            <div className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-emerald-50 border border-black/10 shadow-bg", montserrat.className)}>
                                 <p className="text-sm">
                                     {result}
                                 </p>
@@ -227,11 +260,11 @@ const ConversationPage = () => {
                                     <CopyIcon result={result} />
                                 </span>
                             </div>
-                            {result === '' ? <></> : <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties</p>}  
+                            {result === '' ? <></> : <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties OpenAI</p>}  
                             {rephrases.map(rephrase => (
                                 <div 
                                     key={rephrase} 
-                                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-slate-100 border border-black/10 shadow-sm", montserrat.className)}>
+                                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-emerald-50 border border-black/10 shadow-sm", montserrat.className)}>
                                     <p className="text-sm">
                                         {rephrase}
                                     </p>
