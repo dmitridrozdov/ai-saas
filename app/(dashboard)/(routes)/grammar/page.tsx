@@ -78,8 +78,30 @@ const ConversationPage = () => {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
             
-            const response = await axios.post('/api/grammar', { messages: newMessages });
+            const response = await axios.post('/api/grammargemini', { messages: newMessages });
 
+            console.log(response.data.content)
+
+          } catch (error: any) {
+            if (error?.response?.status === 403) {
+              proModal.onOpen();
+            } else {
+              toast.error("Something went wrong.");
+            }
+            console.log(error)
+          } finally {
+            router.refresh();
+          }
+    }
+
+    const openaiVerify = async (values: z.infer<typeof formSchema>) => {
+        try {
+            const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+            const newMessages = [...messages, userMessage];
+            
+            const response = await axios.post('/api/grammar', { messages: newMessages });
+            
+            console.log(response.data.content)
             const parts = response.data.content.split("Task 2");
 
             setResult(prepareResult(parts[0]))
@@ -97,7 +119,7 @@ const ConversationPage = () => {
           } finally {
             router.refresh();
           }
-    }
+      }
 
     const onClear = async (values: z.infer<typeof formSchema>) => {
         form.reset()
@@ -138,7 +160,10 @@ const ConversationPage = () => {
                         />
                         <div className={cn("col-span-12 lg:col-span-2 w-full flex", montserrat.className)} >
                             <Button variant = 'verify' type="submit" disabled={isLoading} size="icon" className="flex-grow mr-1">
-                                Verify
+                                Gemini
+                            </Button>
+                            <Button variant = 'openai' onClick={form.handleSubmit(openaiVerify)} disabled={isLoading} size="icon" className="flex-grow mr-1">
+                                OpenAI
                             </Button> 
                             <Button variant='clear' onClick={form.handleSubmit(onClear)} disabled={isLoading} size="icon" className="flex-grow ml-2">
                                 Clear
