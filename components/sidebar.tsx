@@ -21,7 +21,7 @@ const routes = [
     bgColor: "bg-white",
   },
   {
-    label: 'ChatGPT',
+    label: 'Gemini',
     icon: MessageSquare,
     href: '/conversation',
     color: "text-slate-400",
