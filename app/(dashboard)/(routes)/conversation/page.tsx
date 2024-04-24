@@ -21,6 +21,7 @@ import { Empty } from "@/components/ui/empty";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { Montserrat } from 'next/font/google';
+import Markdown from "@/components/markdown";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 
@@ -117,7 +118,8 @@ const ConversationPage = () => {
                         >
                             {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                             <p className="text-sm">
-                                {message.content}
+                                {/* {message.content} */}
+                                <Markdown text={message.content ? message.content : ""} />
                             </p>
                         </div>
                         ))}
