@@ -18,8 +18,6 @@ export async function POST(
       return new NextResponse("Messages are required", { status: 400 });
     }
 
-    // console.log(messages[0].content)
-
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
