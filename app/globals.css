@@ -81,4 +81,8 @@ body,
   body {
     @apply bg-background text-foreground;
   }
+
+  .input-font {
+    font-size: 16px;
+  }
 }
