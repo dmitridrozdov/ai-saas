@@ -19,7 +19,7 @@ export async function POST(
     }
 
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash"});
 
     const result = await model.generateContent('Correct English sentence and rephrase 3 time: ' + messages[0].content);
     const response = await result.response;
