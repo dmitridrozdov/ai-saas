@@ -19,6 +19,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         premium: "bg-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-800 text-white border-0",
+        verify: "bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 text-white border-0 hover:bg-gradient-to-r hover:from-cyan-600 hover:via-cyan-700 hover:to-cyan-800",
         claude: "bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white border-0 hover:bg-gradient-to-r hover:from-amber-800 hover:via-amber-900 hover:to-stone-900",
         gemini: "bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 text-white border-0 hover:bg-gradient-to-r hover:from-purple-600 hover:via-purple-700 hover:to-purple-800",
         openai: "bg-gradient-to-r from-lime-500 via-lime-600 to-lime-700 text-white border-0 hover:bg-gradient-to-r hover:from-lime-600 hover:via-lime-700 hover:to-lime-800",
