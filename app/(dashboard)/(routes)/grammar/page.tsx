@@ -20,9 +20,11 @@ import { Loader } from "@/components/loader";
 import { Montserrat, Kanit } from 'next/font/google';
 import { CopyIcon } from '@/components/copy-icon'
 import Markdown from "@/components/markdown";
+import { Separator } from "@/components/ui/separator";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 const kanit = Kanit ({ weight: '100', subsets: ['latin']})
+const requestResult = Kanit ({ weight: '500', subsets: ['latin']})
 
 const ConversationPage = () => {
     const router = useRouter();
@@ -256,10 +258,18 @@ const ConversationPage = () => {
                 </div>
                 <div className="space-y-4 mt-4">
                     {!isLoading && claudeResult !== '' && (
-                        <Markdown text={claudeResult} />
+                        <div className="flex flex-col gap-y-4">
+                            <p className={cn("text-xl text-amber-700", requestResult.className)}>Claude Results</p>
+                            <Markdown text={claudeResult} />
+                            <Separator />
+                        </div>
                     )}
                     {!isLoading && geminiResult !== '' && (
-                        <Markdown text={geminiResult} />
+                        <div className="flex flex-col gap-y-4">
+                            <p className={cn("text-xl text-blue-500", requestResult.className)}>Gemini Results</p>
+                            <Markdown text={geminiResult} />
+                            <Separator />
+                        </div>
                     )}
                     {!isLoading && geminiResult !== '' && (
                         <div className="flex flex-col gap-y-4">
