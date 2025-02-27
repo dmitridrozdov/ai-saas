@@ -29,10 +29,14 @@ const ConversationPage = () => {
     const proModal = useProModal();
 
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
+
     const [result, setResult] = useState('')
     const [rephrases, setRepharses] = useState<string[]>([])
+
     const [geminiResult, setGeminiResult] = useState('')
     const [geminiResultList, setGeminiResultList] = useState<string[]>([])
+
+    const [claudeResult, setClaudeResult] = useState('')
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -109,6 +113,28 @@ const ConversationPage = () => {
             
             const response = await axios.post('/api/grammargemini', { messages: newMessages });
 
+            setClaudeResult(response.data.content)
+            // setGeminiResultList(removeBetweenStars(response.data.content))
+
+          } catch (error: any) {
+            if (error?.response?.status === 403) {
+              proModal.onOpen();
+            } else {
+              toast.error("Something went wrong.");
+            }
+            console.log(error)
+          } finally {
+            router.refresh();
+          }
+    }
+
+    const geminiVerify = async (values: z.infer<typeof formSchema>) => {
+        try {
+            const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+            const newMessages = [...messages, userMessage];
+            
+            const response = await axios.post('/api/grammargemini', { messages: newMessages });
+
             setGeminiResult(response.data.content)
             setGeminiResultList(removeBetweenStars(response.data.content))
 
@@ -157,6 +183,7 @@ const ConversationPage = () => {
         setRepharses([])
         setGeminiResult('')
         setGeminiResultList([])
+        setClaudeResult('')
     }
 
     return (
@@ -174,37 +201,64 @@ const ConversationPage = () => {
                         <form 
                             onSubmit={form.handleSubmit(onSubmit)} 
                             className="rounded-sm border w-full p-4 px-3 md:px-6 focus-within:shadow-sm
-                                grid grid-cols-12 gap-2">
-                         <FormField
-                            name="prompt"
-                            render={({ field }) => (
-                            <FormItem className="col-span-12 lg:col-span-10">
-                                <FormControl className="m-0 p-0">
-                                <Input
-                                    className={cn("border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent", montserrat.className)}
+                                grid grid-cols-12 gap-2 overflow-hidden">
+                            <FormField
+                                name="prompt"
+                                render={({ field }) => (
+                                <FormItem className="col-span-12 lg:col-span-10">
+                                    <FormControl className="m-0 p-0">
+                                    <Input
+                                        className={cn("border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent", montserrat.className)}
+                                        disabled={isLoading} 
+                                        placeholder="" 
+                                        {...field}
+                                    />
+                                    </FormControl>
+                                </FormItem>
+                                )}
+                            />
+                            {/* Previous button code commented out */}
+                            <div className={cn("col-span-12 lg:col-span-2 w-full flex flex-wrap gap-1 md:gap-2", montserrat.className)}>
+                                <Button 
+                                    variant='claude' 
+                                    type="submit" 
                                     disabled={isLoading} 
-                                    placeholder="" 
-                                    {...field}
-                                />
-                                </FormControl>
-                            </FormItem>
-                            )}
-                        />
-                        <div className={cn("col-span-12 lg:col-span-2 w-full flex", montserrat.className)} >
-                            <Button variant = 'verify' type="submit" disabled={isLoading} size="icon" className="flex-grow mr-1">
-                                Gemini
-                            </Button>
-                            <Button variant = 'openai' onClick={form.handleSubmit(openaiVerify)} disabled={isLoading} size="icon" className="flex-grow mr-1">
-                                OpenAI
-                            </Button> 
-                            <Button variant='clear' onClick={form.handleSubmit(onClear)} disabled={isLoading} size="icon" className="flex-grow ml-2">
-                                Clear
-                            </Button>   
-                        </div>
+                                    className="flex-1 py-1 text-xs sm:text-sm"
+                                >
+                                    Claude
+                                </Button>
+                                <Button 
+                                    variant='gemini' 
+                                    onClick={form.handleSubmit(geminiVerify)} 
+                                    disabled={isLoading} 
+                                    className="flex-1 py-1 text-xs sm:text-sm"
+                                >
+                                    Gemini
+                                </Button>
+                                <Button 
+                                    variant='openai' 
+                                    onClick={form.handleSubmit(openaiVerify)} 
+                                    disabled={isLoading} 
+                                    className="flex-1 py-1 text-xs sm:text-sm"
+                                >
+                                    OpenAI
+                                </Button>
+                                <Button 
+                                    variant='clear' 
+                                    onClick={form.handleSubmit(onClear)} 
+                                    disabled={isLoading} 
+                                    className="flex-1 py-1 text-xs sm:text-sm"
+                                >
+                                    Clear
+                                </Button>
+                            </div>
                         </form>
                     </Form>
                 </div>
                 <div className="space-y-4 mt-4">
+                    {!isLoading && claudeResult !== '' && (
+                        <Markdown text={claudeResult} />
+                    )}
                     {!isLoading && geminiResult !== '' && (
                         <Markdown text={geminiResult} />
                     )}
