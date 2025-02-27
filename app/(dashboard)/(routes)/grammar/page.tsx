@@ -217,7 +217,6 @@ const ConversationPage = () => {
                                 </FormItem>
                                 )}
                             />
-                            {/* Previous button code commented out */}
                             <div className={cn("col-span-12 lg:col-span-2 w-full flex flex-wrap gap-1 md:gap-2", montserrat.className)}>
                                 <Button 
                                     variant='claude' 
