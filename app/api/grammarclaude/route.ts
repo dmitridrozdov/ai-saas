@@ -1,22 +1,44 @@
-// app/api/claude/route.ts
 import { Anthropic } from '@anthropic-ai/sdk';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const { prompt } = await request.json();
+    const body = await request.json();
+    const { messages  } = body;
+
+    if (!messages) {
+      return new NextResponse("Messages are required", { status: 400 });
+    }
     
     const anthropic = new Anthropic({
       apiKey: process.env.CLAUDE_API_KEY,
     });
-    
-    const completion = await anthropic.completions.create({
+
+    const response = await anthropic.messages.create({
       model: "claude-3-opus-20240229",
-      prompt: `\n\nCorrect English sentence and rephrase 3 time:  ${prompt}`,
-      max_tokens_to_sample: 1000,
+      max_tokens: 1000,
+      messages: [
+        {
+          role: "user",
+          content: `Correct English sentence and rephrase 3 times: ${messages[0].content}`
+        }
+      ]
     });
     
-    return NextResponse.json({ response: completion.completion });
+    //DEBUG
+    // console.log('stringified response:', JSON.stringify(response, null, 2));
+
+    let textContent = "";
+    if (response.content && response.content.length > 0) {
+      for (const block of response.content) {
+        if (block.type === "text") {
+          textContent += block.text;
+        }
+      }
+    }
+
+    // Return just the text string
+    return NextResponse.json({ response: textContent });
   } catch (error) {
     console.error('Claude API error:', error);
     return NextResponse.json({ error: 'Error processing your request' }, { status: 500 });
