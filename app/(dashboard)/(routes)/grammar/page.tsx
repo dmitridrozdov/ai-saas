@@ -113,10 +113,12 @@ const ConversationPage = () => {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
             
-            const response = await axios.post('/api/grammargemini', { messages: newMessages });
+            const response = await axios.post('/api/grammarclaude', { messages: newMessages });
 
-            setClaudeResult(response.data.content)
-            // setGeminiResultList(removeBetweenStars(response.data.content))
+            // response.data.response is now a string
+            const textContent = response.data.response;
+
+            setClaudeResult(textContent);
 
           } catch (error: any) {
             if (error?.response?.status === 403) {
