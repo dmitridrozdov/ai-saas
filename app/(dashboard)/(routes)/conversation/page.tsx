@@ -40,6 +40,7 @@ const ConversationPage = () => {
 
     const isLoading = form.formState.isSubmitting;
 
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
@@ -64,7 +65,7 @@ const ConversationPage = () => {
     return (
         <div>
             <Heading
-                title="Gemini"
+                title="Conversation"
                 description="The most advanced conversation model."
                 icon={MessageSquare}
                 iconColor="text-slate-400"
@@ -92,8 +93,21 @@ const ConversationPage = () => {
                             </FormItem>
                             )}
                         />
-                        <Button variant='verify' className={cn("col-span-12 lg:col-span-2 w-full", montserrat.className)} type="submit" disabled={isLoading} size="icon">
-                            Generate
+                         {/* <Button 
+                            variant='claude' 
+                            className={cn("col-span-12 lg:col-span-2 w-full", montserrat.className)} 
+                            type="submit" 
+                            disabled={isLoading} size="icon"
+                        >
+                            Claude
+                        </Button>  */}
+                        <Button 
+                            variant='gemini' 
+                            className={cn("col-span-12 lg:col-span-2 w-full", montserrat.className)} 
+                            type="submit"
+                            disabled={isLoading} size="icon"
+                        >
+                            Gemini
                         </Button>   
                         </form>
                     </Form>
