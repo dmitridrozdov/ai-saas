@@ -11,7 +11,7 @@ export const tools = [
     bgColor: "bg-white",
   },
   {
-    label: 'Gemini',
+    label: 'Conversation',
     icon: MessageSquare,
     href: '/conversation',
     color: "text-slate-400",
