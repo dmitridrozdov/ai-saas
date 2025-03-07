@@ -108,7 +108,7 @@ const ConversationPage = () => {
         return lines.map(line => removeTextBetweenStars(line)).filter(line => line.trim() !== "")
     }
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const claudeVerify = async (values: z.infer<typeof formSchema>) => {
         try {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
@@ -132,7 +132,7 @@ const ConversationPage = () => {
           }
     }
 
-    const geminiVerify = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
@@ -222,21 +222,22 @@ const ConversationPage = () => {
                                 )}
                             />
                             <div className={cn("col-span-12 lg:col-span-2 w-full flex flex-wrap gap-1 md:gap-2", montserrat.className)}>
+                               
                                 <Button 
-                                    variant='claude' 
+                                    variant='gemini' 
                                     type="submit" 
                                     disabled={isLoading} 
                                     className="flex-1 py-1 text-xs sm:text-sm"
                                 >
-                                    Claude
+                                    Gemini
                                 </Button>
                                 <Button 
-                                    variant='gemini' 
-                                    onClick={form.handleSubmit(geminiVerify)} 
+                                    variant='claude' 
+                                    onClick={form.handleSubmit(claudeVerify)}
                                     disabled={isLoading} 
                                     className="flex-1 py-1 text-xs sm:text-sm"
                                 >
-                                    Gemini
+                                    Claude
                                 </Button>
                                 <Button 
                                     variant='openai' 
@@ -259,13 +260,6 @@ const ConversationPage = () => {
                     </Form>
                 </div>
                 <div className="space-y-4 mt-4">
-                    {!isLoading && claudeResult !== '' && (
-                        <div className="flex flex-col gap-y-4">
-                            <p className={cn("text-xl text-amber-700", requestResult.className)}>Claude Results</p>
-                            <Markdown text={claudeResult} />
-                            <Separator />
-                        </div>
-                    )}
                     {!isLoading && geminiResult !== '' && (
                         <div className="flex flex-col gap-y-4">
                             <p className={cn("text-xl text-blue-500", requestResult.className)}>Gemini Results</p>
@@ -305,8 +299,18 @@ const ConversationPage = () => {
                                     </div>
                                 ))}
                             </div>
+                            <Separator />
                         </div>
                     )}
+
+                    {!isLoading && claudeResult !== '' && (
+                        <div className="flex flex-col gap-y-4">
+                            <p className={cn("text-xl text-amber-700", requestResult.className)}>Claude Results</p>
+                            <Markdown text={claudeResult} />
+                            <Separator />
+                        </div>
+                    )}
+
                 </div>                   
                 <div className="space-y-4 mt-4">
                     {isLoading && (
