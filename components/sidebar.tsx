@@ -50,6 +50,12 @@ const routes = [
     color: "text-slate-400",
     href: '/prediction',
   },
+  {
+    label: 'AI Agents',
+    icon: Settings,
+    color: "text-red-400",
+    href: '/agents',
+  },
 ];
 
 export const Sidebar = ({
