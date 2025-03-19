@@ -11,7 +11,8 @@ const TestPage = () => {
   const [counter, setCounter] = useState<number>(0);
   const [inputText, setInputText] = useState<string>('');
   const [dropdownValue, setDropdownValue] = useState<string>('Option 1');
-  const [checkboxChecked, setCheckboxChecked] = useState<boolean>(false);
+  const [checkboxes, setCheckboxes] = useState<boolean[]>([false, false, false]);
+  const [radioValue, setRadioValue] = useState<string>('');
   const [textareaValue, setTextareaValue] = useState<string>('');
   const [listItems, setListItems] = useState<string[]>(['Item 1', 'Item 2', 'Item 3']);
 
@@ -53,8 +54,17 @@ const TestPage = () => {
     setDropdownValue(e.target.value);
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckboxChecked(e.target.checked);
+  const handleCheckboxChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckboxes((prevCheckboxes) => {
+      const newCheckboxes = [...prevCheckboxes];
+      newCheckboxes[index] = e.target.checked;
+      return newCheckboxes;
+    });
+  };
+
+  const handleRadioChange = (value: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRadioValue(value);
+    setTextareaValue(`Radio button "${value}" selected.`);
   };
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,15 +118,63 @@ const TestPage = () => {
           </select>
         </div>
 
-        <div className="mb-4 flex items-center">
-          <input
-            data-testid="checkbox"
-            type="checkbox"
-            checked={checkboxChecked}
-            onChange={handleCheckboxChange}
-            className="mr-2"
-          />
-          <label>Checkbox</label>
+        <div className="mb-4">
+          <div className="flex flex-col">
+            <label className="mb-1">Checkboxes:</label>
+            {checkboxes.map((checked, index) => (
+              <div key={index} className="flex items-center mb-1">
+                <input
+                  data-testid={`checkbox-${index + 1}`}
+                  type="checkbox"
+                  checked={checked}
+                  onChange={handleCheckboxChange(index)}
+                  className="mr-2"
+                />
+                <label>Checkbox {index + 1}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <div className="flex flex-col">
+            <label className="mb-1">Radio Buttons:</label>
+            <div className="flex gap-4">
+              <div className="flex items-center">
+                <input
+                  data-testid="radio-1"
+                  type="radio"
+                  value="Radio 1"
+                  checked={radioValue === 'Radio 1'}
+                  onChange={handleRadioChange('Radio 1')}
+                  className="mr-2"
+                />
+                <label>Radio 1</label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  data-testid="radio-2"
+                  type="radio"
+                  value="Radio 2"
+                  checked={radioValue === 'Radio 2'}
+                  onChange={handleRadioChange('Radio 2')}
+                  className="mr-2"
+                />
+                <label>Radio 2</label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  data-testid="radio-3"
+                  type="radio"
+                  value="Radio 3"
+                  checked={radioValue === 'Radio 3'}
+                  onChange={handleRadioChange('Radio 3')}
+                  className="mr-2"
+                />
+                <label>Radio 3</label>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="mb-4">
