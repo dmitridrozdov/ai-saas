@@ -4,6 +4,12 @@ import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { Montserrat, Source_Code_Pro, Kanit } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
+const sourcecodepro = Source_Code_Pro ({ weight: '300', subsets: ['latin'] });
+const kanit = Kanit ({ weight: '300', subsets: ['latin'] });
+
 const TestPage = () => {
   const [data, setData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
