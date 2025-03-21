@@ -15,6 +15,7 @@ const TestPage = () => {
   const [radioValue, setRadioValue] = useState<string>('');
   const [textareaValue, setTextareaValue] = useState<string>('');
   const [listItems, setListItems] = useState<string[]>(['Item 1', 'Item 2', 'Item 3']);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -71,12 +72,16 @@ const TestPage = () => {
     setTextareaValue(e.target.value);
   };
 
+  const togglePanel = () => {
+    setIsPanelOpen(!isPanelOpen);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-8 relative">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-semibold mb-4 text-center">Test Page</h1>
 
@@ -195,9 +200,31 @@ const TestPage = () => {
           </ul>
         </div>
 
+        <div className="mb-4">
+          <Button onClick={togglePanel} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+            Toggle Panel
+          </Button>
+        </div>
+
         {loading && <p className="text-center text-gray-600">Loading...</p>}
         {error && <p className="text-center text-red-500">Error: {error}</p>}
         {data && <p className="text-center">Data: <span className="font-semibold">{data}</span></p>}
+      </div>
+
+      {/* Sliding Panel */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+          isPanelOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="p-4">
+          <h2 className="text-lg font-semibold mb-4">Sliding Panel</h2>
+          <p>This is the content of the sliding panel.</p>
+          {/* Add more panel content here */}
+          <Button onClick={togglePanel} className="mt-4 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">
+            Close Panel
+          </Button>
+        </div>
       </div>
     </div>
   );
