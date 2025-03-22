@@ -87,10 +87,32 @@ const TestPage = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Define your key combination (e.g., Ctrl + Shift + A)
+      if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+        event.preventDefault(); // Prevent default browser behavior
+        togglePanel();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [togglePanel]); // Add togglePanel as a dependency
+
   return (
     <div className="min-h-screen bg-gray-100 p-8 relative">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+        
+        <div className="mb-4">
         <h1 className={cn("text-2xl font-semibold mb-4 text-center", montserrat.className)}>Test Page</h1>
+          {/* <Button onClick={togglePanel} className={cn("bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded", montserrat.className)}>
+          Trigger AI Verification Agent
+          </Button> */}
+        </div>
 
         <div className="mb-4 flex gap-2 justify-center">
           <Button data-testid="fetch-data-button" onClick={fetchData} disabled={loading} className={cn("bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded", montserrat.className)}>
@@ -207,11 +229,7 @@ const TestPage = () => {
           </ul>
         </div>
 
-        <div className="mb-4">
-          <Button onClick={togglePanel} className={cn("bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded", montserrat.className)}>
-            Toggle Panel
-          </Button>
-        </div>
+        
 
         {loading && <p className={cn("text-center text-gray-600", sourcecodepro.className)}>Loading...</p>}
         {error && <p className={cn("text-center text-red-500", sourcecodepro.className)}>Error: {error}</p>}
