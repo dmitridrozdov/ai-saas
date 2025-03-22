@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { cn } from '@/lib/utils';
 
 import { Montserrat, Source_Code_Pro, Kanit } from 'next/font/google';
 
@@ -89,18 +90,18 @@ const TestPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8 relative">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-semibold mb-4 text-center">Test Page</h1>
+        <h1 className={cn("text-2xl font-semibold mb-4 text-center", montserrat.className)}>Test Page</h1>
 
         <div className="mb-4 flex gap-2 justify-center">
-          <Button data-testid="fetch-data-button" onClick={fetchData} disabled={loading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <Button data-testid="fetch-data-button" onClick={fetchData} disabled={loading} className={cn("bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded", montserrat.className)}>
             Fetch Data
           </Button>
-          <Button data-testid="increment-button" onClick={handleIncrement} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          <Button data-testid="increment-button" onClick={handleIncrement} className={cn("bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded", montserrat.className)}>
             Increment Counter
           </Button>
         </div>
 
-        <p className="text-center mb-4">Counter: <span className="font-semibold">{counter}</span></p>
+        <p className={cn("text-center mb-4", sourcecodepro.className)}>Counter: <span className="font-semibold">{counter}</span></p>
 
         <div className="mb-4">
           <input
@@ -109,9 +110,9 @@ const TestPage = () => {
             value={inputText}
             onChange={handleInputChange}
             placeholder="Enter text"
-            className="w-full p-2 border rounded"
+            className={cn("w-full p-2 border rounded", sourcecodepro.className)}
           />
-          <Button data-testid="submit-input-button" onClick={handleSubmitInput} disabled={loading} className="mt-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+          <Button data-testid="submit-input-button" onClick={handleSubmitInput} disabled={loading} className={cn("mt-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded", sourcecodepro.className)}>
             Submit Input
           </Button>
         </div>
@@ -121,7 +122,7 @@ const TestPage = () => {
             data-testid="dropdown"
             value={dropdownValue}
             onChange={handleDropdownChange}
-            className="w-full p-2 border rounded"
+            className={cn("w-full p-2 border rounded", kanit.className)}
           >
             <option value="Option 1">Option 1</option>
             <option value="Option 2">Option 2</option>
@@ -131,7 +132,7 @@ const TestPage = () => {
 
         <div className="mb-4">
           <div className="flex flex-col">
-            <label className="mb-1">Checkboxes:</label>
+            <label className={cn("mb-1", montserrat.className)}>Checkboxes:</label>
             {checkboxes.map((checked, index) => (
               <div key={index} className="flex items-center mb-1">
                 <input
@@ -141,7 +142,7 @@ const TestPage = () => {
                   onChange={handleCheckboxChange(index)}
                   className="mr-2"
                 />
-                <label>Checkbox {index + 1}</label>
+                <label className={cn("", montserrat.className)}>Checkbox {index + 1}</label>
               </div>
             ))}
           </div>
@@ -149,7 +150,7 @@ const TestPage = () => {
 
         <div className="mb-4">
           <div className="flex flex-col">
-            <label className="mb-1">Radio Buttons:</label>
+            <label className={cn("mb-1", sourcecodepro.className)}>Radio Buttons:</label>
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
@@ -160,7 +161,7 @@ const TestPage = () => {
                   onChange={handleRadioChange('Radio 1')}
                   className="mr-2"
                 />
-                <label>Radio 1</label>
+                <label className={cn("", sourcecodepro.className)}>Radio 1</label>
               </div>
               <div className="flex items-center">
                 <input
@@ -171,7 +172,7 @@ const TestPage = () => {
                   onChange={handleRadioChange('Radio 2')}
                   className="mr-2"
                 />
-                <label>Radio 2</label>
+                <label className={cn("", sourcecodepro.className)}>Radio 2</label>
               </div>
               <div className="flex items-center">
                 <input
@@ -182,7 +183,7 @@ const TestPage = () => {
                   onChange={handleRadioChange('Radio 3')}
                   className="mr-2"
                 />
-                <label>Radio 3</label>
+                <label className={cn("", sourcecodepro.className)}>Radio 3</label>
               </div>
             </div>
           </div>
@@ -194,12 +195,12 @@ const TestPage = () => {
             value={textareaValue}
             onChange={handleTextareaChange}
             placeholder="Enter text"
-            className="w-full p-2 border rounded"
+            className={cn("w-full p-2 border rounded", kanit.className)}
           />
         </div>
 
         <div className="mb-4">
-          <ul data-testid="list" className="list-disc list-inside">
+          <ul data-testid="list" className={cn("list-disc list-inside", kanit.className)}>
             {listItems.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
@@ -207,14 +208,14 @@ const TestPage = () => {
         </div>
 
         <div className="mb-4">
-          <Button onClick={togglePanel} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+          <Button onClick={togglePanel} className={cn("bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded", montserrat.className)}>
             Toggle Panel
           </Button>
         </div>
 
-        {loading && <p className="text-center text-gray-600">Loading...</p>}
-        {error && <p className="text-center text-red-500">Error: {error}</p>}
-        {data && <p className="text-center">Data: <span className="font-semibold">{data}</span></p>}
+        {loading && <p className={cn("text-center text-gray-600", sourcecodepro.className)}>Loading...</p>}
+        {error && <p className={cn("text-center text-red-500", sourcecodepro.className)}>Error: {error}</p>}
+        {data && <p className={cn("text-center", kanit.className)}>Data: <span className="font-semibold">{data}</span></p>}
       </div>
 
       {/* Sliding Panel */}
@@ -224,10 +225,10 @@ const TestPage = () => {
         }`}
       >
         <div className="p-4">
-          <h2 className="text-lg font-semibold mb-4">Sliding Panel</h2>
-          <p>This is the content of the sliding panel.</p>
+          <h2 className={cn("text-lg font-semibold mb-4", montserrat.className)}>Sliding Panel</h2>
+          <p className={cn("", sourcecodepro.className)}>This is the content of the sliding panel.</p>
           {/* Add more panel content here */}
-          <Button onClick={togglePanel} className="mt-4 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">
+          <Button onClick={togglePanel} className={cn("mt-4 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded", kanit.className)}>
             Close Panel
           </Button>
         </div>
