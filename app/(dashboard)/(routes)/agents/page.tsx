@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { cn } from '@/lib/utils';
+import { useProModal } from "@/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 import { Montserrat, Source_Code_Pro, Kanit } from 'next/font/google';
 
@@ -23,6 +25,8 @@ const TestPage = () => {
   const [textareaValue, setTextareaValue] = useState<string>('');
   const [listItems, setListItems] = useState<string[]>(['Item 1', 'Item 2', 'Item 3']);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  const proModal = useProModal();
 
   const fetchData = async () => {
     setLoading(true);
@@ -79,8 +83,27 @@ const TestPage = () => {
     setTextareaValue(e.target.value);
   };
 
+  const createUnitTest = async () => {
+    try {
+      
+      const response = await axios.post('/api/unittest', {});
+      console.log(response.data.content)
+
+      } catch (error: any) {
+        if (error?.response?.status === 403) {
+          proModal.onOpen();
+        } else {
+          toast.error("Something went wrong.");
+        }
+        console.log(error)
+      }
+  }
+
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);
+    if(isPanelOpen){
+      createUnitTest()
+    }
   };
 
   useEffect(() => {
@@ -109,9 +132,6 @@ const TestPage = () => {
         
         <div className="mb-4">
         <h1 className={cn("text-2xl font-semibold mb-4 text-center", montserrat.className)}>Test Page</h1>
-          {/* <Button onClick={togglePanel} className={cn("bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded", montserrat.className)}>
-          Trigger AI Verification Agent
-          </Button> */}
         </div>
 
         <div className="mb-4 flex gap-2 justify-center">
@@ -243,12 +263,8 @@ const TestPage = () => {
         }`}
       >
         <div className="p-4">
-          <h2 className={cn("text-lg font-semibold mb-4", montserrat.className)}>Sliding Panel</h2>
-          <p className={cn("", sourcecodepro.className)}>This is the content of the sliding panel.</p>
+          <h2 className={cn("text-lg font-semibold mb-4", montserrat.className)}>AI Agents</h2>
           {/* Add more panel content here */}
-          <Button onClick={togglePanel} className={cn("mt-4 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded", kanit.className)}>
-            Close Panel
-          </Button>
         </div>
       </div>
     </div>
