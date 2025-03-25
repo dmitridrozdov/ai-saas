@@ -83,11 +83,33 @@ const TestPage = () => {
     setTextareaValue(e.target.value);
   };
 
+  const saveUnitTest = async (testContent: string) => {
+    try {
+      const response = await fetch('/api/savefile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fileContent: testContent, fileName: 'TestPage.test.tsx' }),
+      });
+
+      if (response.ok) {
+        console.log('Test file generated and saved successfully!');
+      } else {
+        console.error('Failed to generate and save test file.');
+      }
+    } catch (error) {
+      console.error('Error generating and saving test file:', error);
+    }
+  };
+
   const createUnitTest = async () => {
     try {
       
       const response = await axios.post('/api/unittest', {});
-      console.log(response.data.content)
+      // console.log(response.data.content)
+
+      saveUnitTest(response.data.content)
 
       } catch (error: any) {
         if (error?.response?.status === 403) {
@@ -101,7 +123,7 @@ const TestPage = () => {
 
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);
-    if(isPanelOpen){
+    if(!isPanelOpen){
       createUnitTest()
     }
   };
