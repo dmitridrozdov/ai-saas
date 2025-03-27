@@ -6,13 +6,15 @@ import axios from 'axios';
 import { cn } from '@/lib/utils';
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
-import { Montserrat, Source_Code_Pro, Kanit, Teko} from 'next/font/google';
+import { Montserrat, Source_Code_Pro, Kanit, Teko, Delius} from 'next/font/google';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const sourcecodepro = Source_Code_Pro ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '300', subsets: ['latin'] });
 const teko = Teko ({ weight: '300', subsets: ['latin'] });
+const delius = Delius ({ weight: '400', subsets: ['latin'] });
 
 const TestPage = () => {
   const [data, setData] = useState<string | null>(null);
@@ -296,20 +298,21 @@ const TestPage = () => {
           <h2 className={cn("text-lg font-semibold mb-4", montserrat.className)}>AI Agents</h2>
           
           {unitTestStatus === 'loading' && (
-            <div className={cn("flex items-center space-x-2 border border-blue-500 rounded p-4", sourcecodepro.className)}>
-              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-500"></div>
+            <div className={cn("flex items-center space-x-4 border border-blue-500 rounded-lg p-4", delius.className)}>
+              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-700"></div>
               <span>Creating unit tests....</span>
             </div>
           )}
 
           {unitTestStatus === 'success' && (
-            <div className={cn("flex items-center space-x-2 text-green-500 border border-blue-500 p-4", sourcecodepro.className)}>
+            <div className={cn("flex items-center space-x-4 text-green-700 border border-blue-700 rounded-lg p-4", delius.className)}>
+              <CheckCircleIcon className="h-6 w-6 text-green-700" />
               <span>Unit tests created successfully!</span>
             </div>
           )}
 
           {unitTestStatus === 'error' && (
-            <div className="flex items-center space-x-2 text-red-500 text-3xl">
+            <div className="flex items-center space-x-2 text-red-500 border border-blue-700 rounded-lg p-4">
               <span>Failed to create unit tests.</span>
             </div>
           )}
