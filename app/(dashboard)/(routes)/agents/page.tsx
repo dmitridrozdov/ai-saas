@@ -7,11 +7,12 @@ import { cn } from '@/lib/utils';
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 
-import { Montserrat, Source_Code_Pro, Kanit } from 'next/font/google';
+import { Montserrat, Source_Code_Pro, Kanit, Teko} from 'next/font/google';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const sourcecodepro = Source_Code_Pro ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '300', subsets: ['latin'] });
+const teko = Teko ({ weight: '300', subsets: ['latin'] });
 
 const TestPage = () => {
   const [data, setData] = useState<string | null>(null);
@@ -25,6 +26,7 @@ const TestPage = () => {
   const [textareaValue, setTextareaValue] = useState<string>('');
   const [listItems, setListItems] = useState<string[]>(['Item 1', 'Item 2', 'Item 3']);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [unitTestStatus, setUnitTestStatus] = useState(''); // null, 'loading',
 
   const proModal = useProModal();
 
@@ -94,16 +96,20 @@ const TestPage = () => {
       });
 
       if (response.ok) {
-        console.log('Test file generated and saved successfully!');
+        console.log('Test file generated and saved successfully!')
+        setUnitTestStatus('success')
       } else {
-        console.error('Failed to generate and save test file.');
+        console.error('Failed to generate and save test file.')
+        setUnitTestStatus('error')
       }
     } catch (error) {
-      console.error('Error generating and saving test file:', error);
+      console.error('Error generating and saving test file:', error)
+      setUnitTestStatus('error')
     }
   };
 
   const createUnitTest = async () => {
+    setUnitTestStatus('loading') // Start loading
     try {
       
       const response = await axios.post('/api/unittest', {});
@@ -125,6 +131,8 @@ const TestPage = () => {
     setIsPanelOpen(!isPanelOpen);
     if(!isPanelOpen){
       createUnitTest()
+    } else {
+      setUnitTestStatus('') // reset status when panel is closed.
     }
   };
 
@@ -286,7 +294,26 @@ const TestPage = () => {
       >
         <div className="p-4">
           <h2 className={cn("text-lg font-semibold mb-4", montserrat.className)}>AI Agents</h2>
-          {/* Add more panel content here */}
+          
+          {unitTestStatus === 'loading' && (
+            <div className={cn("flex items-center space-x-2 border border-blue-500 rounded p-4", sourcecodepro.className)}>
+              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-500"></div>
+              <span>Creating unit tests....</span>
+            </div>
+          )}
+
+          {unitTestStatus === 'success' && (
+            <div className={cn("flex items-center space-x-2 text-green-500 border border-blue-500 p-4", sourcecodepro.className)}>
+              <span>Unit tests created successfully!</span>
+            </div>
+          )}
+
+          {unitTestStatus === 'error' && (
+            <div className="flex items-center space-x-2 text-red-500 text-3xl">
+              <span>Failed to create unit tests.</span>
+            </div>
+          )}
+
         </div>
       </div>
     </div>
