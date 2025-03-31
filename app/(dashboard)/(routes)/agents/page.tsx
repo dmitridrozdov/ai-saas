@@ -29,6 +29,7 @@ const TestPage = () => {
   const [textareaValue, setTextareaValue] = useState<string>('');
   const [listItems, setListItems] = useState<string[]>(['Item 1', 'Item 2', 'Item 3']);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [designStatus, setDesignStatus] = useState(''); // null, 'loading',
   const [unitTestStatus, setUnitTestStatus] = useState(''); // null, 'loading',
 
   const proModal = useProModal();
@@ -88,28 +89,44 @@ const TestPage = () => {
     setTextareaValue(e.target.value);
   };
 
-  const saveUnitTest = async (testContent: string) => {
+  const saveFile = async (testContent: string, fileName: string, setStatus: React.Dispatch<React.SetStateAction<string>>) => {
     try {
       const response = await fetch('/api/savefile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fileContent: testContent, fileName: 'TestPage.test.tsx' }),
+        body: JSON.stringify({ fileContent: testContent, fileName: fileName }),
       });
 
       if (response.ok) {
         console.log('Test file generated and saved successfully!')
-        setUnitTestStatus('success')
+        setStatus('success')
       } else {
         console.error('Failed to generate and save test file.')
-        setUnitTestStatus('error')
+        setStatus('error')
       }
     } catch (error) {
       console.error('Error generating and saving test file:', error)
-      setUnitTestStatus('error')
+      setStatus('error')
     }
   };
+
+  const verifyDesign = async () => {
+    setDesignStatus('loading') // Start loading
+    try {
+      const response = await axios.post('/api/designverify', {});
+      // console.log(response.data.content)
+      saveFile(response.data.content, 'DesignVerify.txt', setDesignStatus)
+      } catch (error: any) {
+        if (error?.response?.status === 403) {
+          proModal.onOpen();
+        } else {
+          toast.error("Something went wrong.");
+        }
+        console.log(error)
+      }
+  }
 
   const createUnitTest = async () => {
     setUnitTestStatus('loading') // Start loading
@@ -118,7 +135,7 @@ const TestPage = () => {
       const response = await axios.post('/api/unittest', {});
       // console.log(response.data.content)
 
-      saveUnitTest(response.data.content)
+      saveFile(response.data.content, 'TestPage.test.tsx', setUnitTestStatus)
 
       } catch (error: any) {
         if (error?.response?.status === 403) {
@@ -130,12 +147,14 @@ const TestPage = () => {
       }
   }
 
-  const togglePanel = () => {
+  const togglePanel = async () => {
     setIsPanelOpen(!isPanelOpen);
     if(!isPanelOpen){
-      createUnitTest()
+      await verifyDesign()
+      await createUnitTest()
     } else {
-      setUnitTestStatus('') // reset status when panel is closed.
+      setUnitTestStatus('')
+      setDesignStatus('')
     }
   };
 
@@ -298,6 +317,26 @@ const TestPage = () => {
         <div className="p-4">
           <h2 className={cn("text-lg font-semibold mb-4", montserrat.className)}>AI Agents</h2>
           
+          {designStatus === 'loading' && (
+            <div className={cn("flex items-center space-x-4 border border-blue-500 rounded-lg p-4 text-sm", montserrat.className)}>
+              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-700"></div>
+              <span>Verifing page design....</span>
+            </div>
+          )}
+
+          {designStatus === 'success' && (
+            <div className={cn("flex items-center space-x-4 border border-blue-700 rounded-lg p-4 text-sm", montserrat.className)}>
+              <CheckCircleIcon className="h-6 w-6 text-green-700" />
+              <span>Page design verified and suggestion generated.</span>
+            </div>
+          )}
+
+          {designStatus === 'error' && (
+            <div className="flex items-center space-x-2 text-red-500 border border-blue-700 rounded-lg p-4">
+              <span>Failed to verify design.</span>
+            </div>
+          )}
+
           {unitTestStatus === 'loading' && (
             <div className={cn("flex items-center space-x-4 border border-blue-500 rounded-lg p-4 text-sm", montserrat.className)}>
               <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-700"></div>
