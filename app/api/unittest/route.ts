@@ -30,6 +30,7 @@ I will provide you with the content of a React component file (\`page.tsx\`). Yo
 
 **Here is the content of the \`page.tsx\` file:**
 
+\`\`\`tsx
 `;
 
 export async function POST(req: Request) {
