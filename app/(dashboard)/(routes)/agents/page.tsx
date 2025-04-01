@@ -31,6 +31,7 @@ const TestPage = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [designStatus, setDesignStatus] = useState(''); // null, 'loading',
   const [unitTestStatus, setUnitTestStatus] = useState(''); // null, 'loading',
+  const [playwrightTestStatus, setPlaywrightTestStatus] = useState(''); // null, 'loading',
 
   const proModal = useProModal();
 
@@ -116,7 +117,7 @@ const TestPage = () => {
     setDesignStatus('loading') // Start loading
     try {
       const response = await axios.post('/api/designverify', {});
-      // console.log(response.data.content)
+
       saveFile(response.data.content, 'DesignVerify.txt', setDesignStatus)
       } catch (error: any) {
         if (error?.response?.status === 403) {
@@ -133,10 +134,25 @@ const TestPage = () => {
     try {
       
       const response = await axios.post('/api/unittest', {});
-      // console.log(response.data.content)
 
       saveFile(response.data.content, 'TestPage.test.tsx', setUnitTestStatus)
 
+      } catch (error: any) {
+        if (error?.response?.status === 403) {
+          proModal.onOpen();
+        } else {
+          toast.error("Something went wrong.");
+        }
+        console.log(error)
+      }
+  }
+
+  const createPlaywrightTest = async () => {
+    setPlaywrightTestStatus('loading') // Start loading
+    try {
+      const response = await axios.post('/api/playwrighttest', {});
+
+      saveFile(response.data.content, 'TestPage.spec.ts', setPlaywrightTestStatus)
       } catch (error: any) {
         if (error?.response?.status === 403) {
           proModal.onOpen();
@@ -152,9 +168,11 @@ const TestPage = () => {
     if(!isPanelOpen){
       await verifyDesign()
       await createUnitTest()
+      await createPlaywrightTest()
     } else {
       setUnitTestStatus('')
       setDesignStatus('')
+      setPlaywrightTestStatus('')
     }
   };
 
@@ -377,6 +395,14 @@ const TestPage = () => {
             successMessage="Unit tests generated and verified."
             errorMessage="Failed to create unit tests."
             backgroundColor='bg-gray-200'
+          />
+
+          <StatusDisplay
+            status={playwrightTestStatus}
+            loadingMessage="Generating and running Playwright UI tests..."
+            successMessage="Playwright UI tests generated and passed."
+            errorMessage="Playwright UI tests generation or execution failed."
+            backgroundColor="bg-gray-100"
           />
 
         </div>
