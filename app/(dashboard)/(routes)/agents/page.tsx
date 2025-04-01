@@ -6,7 +6,7 @@ import axios from 'axios';
 import { cn } from '@/lib/utils';
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
 import { Montserrat, Source_Code_Pro, Kanit, Teko, Delius, Oswald} from 'next/font/google';
 
@@ -178,6 +178,52 @@ const TestPage = () => {
     };
   }, [togglePanel]); // Add togglePanel as a dependency
 
+
+  interface StatusDisplayProps {
+    status: string;
+    loadingMessage: string;
+    successMessage: string;
+    errorMessage: string;
+    backgroundColor?: string; // Optional background color parameter
+  }
+  
+  const StatusDisplay: React.FC<StatusDisplayProps> = ({
+    status,
+    loadingMessage,
+    successMessage,
+    errorMessage,
+    backgroundColor = 'bg-white', // Default background color
+  }) => {
+    if (status === 'loading') {
+      return (
+        <div className={cn(`flex items-center space-x-4 rounded-sm p-4 text-xs m-1 ${backgroundColor}`, montserrat.className)}>
+          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-700"></div>
+          <span>{loadingMessage}</span>
+        </div>
+      );
+    }
+  
+    if (status === 'success') {
+      return (
+        <div className={cn(`flex items-center space-x-4 rounded-sm p-4 text-xs m-1 ${backgroundColor}`, montserrat.className)}>
+          <CheckCircleIcon className="h-6 w-6 text-green-700" />
+          <span>{successMessage}</span>
+        </div>
+      );
+    }
+  
+    if (status === 'error') {
+      return (
+        <div className={cn(`flex items-center space-x-4 text-red-500 rounded-sm text-xs p-4 m-1 ${backgroundColor}`)}>
+          <ExclamationTriangleIcon className="h-6 w-6" />
+          <span>{errorMessage}</span>
+        </div>
+      );
+    }
+  
+    return null; // Return null if no status is set
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8 relative">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
@@ -317,45 +363,21 @@ const TestPage = () => {
         <div className="p-4">
           <h2 className={cn("text-lg font-semibold mb-4", montserrat.className)}>AI Agents</h2>
           
-          {designStatus === 'loading' && (
-            <div className={cn("flex items-center space-x-4 border border-blue-500 rounded-lg p-4 text-sm", montserrat.className)}>
-              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-700"></div>
-              <span>Verifing page design....</span>
-            </div>
-          )}
+          <StatusDisplay
+            status={designStatus}
+            loadingMessage="Verifying design..."
+            successMessage="Design verified, suggestion generated."
+            errorMessage="Failed to verify design. Check for errors."
+            backgroundColor='bg-gray-100'
+          />
 
-          {designStatus === 'success' && (
-            <div className={cn("flex items-center space-x-4 border border-blue-700 rounded-lg p-4 text-sm", montserrat.className)}>
-              <CheckCircleIcon className="h-6 w-6 text-green-700" />
-              <span>Page design verified and suggestion generated.</span>
-            </div>
-          )}
-
-          {designStatus === 'error' && (
-            <div className="flex items-center space-x-2 text-red-500 border border-blue-700 rounded-lg p-4">
-              <span>Failed to verify design.</span>
-            </div>
-          )}
-
-          {unitTestStatus === 'loading' && (
-            <div className={cn("flex items-center space-x-4 border border-blue-500 rounded-lg p-4 text-sm", montserrat.className)}>
-              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-700"></div>
-              <span>Generating unit tests....</span>
-            </div>
-          )}
-
-          {unitTestStatus === 'success' && (
-            <div className={cn("flex items-center space-x-4 border border-blue-700 rounded-lg p-4 text-sm", montserrat.className)}>
-              <CheckCircleIcon className="h-6 w-6 text-green-700" />
-              <span>Unit tests generated and verified.</span>
-            </div>
-          )}
-
-          {unitTestStatus === 'error' && (
-            <div className="flex items-center space-x-2 text-red-500 border border-blue-700 rounded-lg p-4">
-              <span>Failed to create unit tests.</span>
-            </div>
-          )}
+          <StatusDisplay
+            status={unitTestStatus}
+            loadingMessage="Generating unit tests...."
+            successMessage="Unit tests generated and verified."
+            errorMessage="Failed to create unit tests."
+            backgroundColor='bg-gray-200'
+          />
 
         </div>
       </div>
