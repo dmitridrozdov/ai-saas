@@ -6,7 +6,7 @@ import axios from 'axios';
 import { cn } from '@/lib/utils';
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, CheckIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
 import { Montserrat, Source_Code_Pro, Kanit, Teko, Delius, Oswald} from 'next/font/google';
 
@@ -32,6 +32,7 @@ const TestPage = () => {
   const [designStatus, setDesignStatus] = useState(''); // null, 'loading',
   const [unitTestStatus, setUnitTestStatus] = useState(''); // null, 'loading',
   const [playwrightTestStatus, setPlaywrightTestStatus] = useState(''); // null, 'loading',
+  const [apiTestStatus, setApiTestStatus] = useState(''); // null, 'loading',
 
   const proModal = useProModal();
 
@@ -163,16 +164,34 @@ const TestPage = () => {
       }
   }
 
+  const createApiTest = async () => {
+    setApiTestStatus('loading') // Start loading
+    try {
+      const response = await axios.post('/api/apitests', {});  
+
+      saveFile(response.data.content, 'TestPage.api.test.ts', setApiTestStatus)      
+      } catch (error: any) {
+        if (error?.response?.status === 403) {
+          proModal.onOpen();
+        } else {
+          toast.error("Something went wrong.");
+        }
+        console.log(error)
+      }
+    }
+
   const togglePanel = async () => {
     setIsPanelOpen(!isPanelOpen);
     if(!isPanelOpen){
       await verifyDesign()
       await createUnitTest()
       await createPlaywrightTest()
+      await createApiTest()
     } else {
       setUnitTestStatus('')
       setDesignStatus('')
       setPlaywrightTestStatus('')
+      setApiTestStatus('')
     }
   };
 
@@ -215,7 +234,7 @@ const TestPage = () => {
     if (status === 'loading') {
       return (
         <div className={cn(`flex items-center space-x-4 rounded-sm p-4 text-xs m-1 ${backgroundColor}`, montserrat.className)}>
-          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-blue-700"></div>
+          <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-blue-700"></div>
           <span>{loadingMessage}</span>
         </div>
       );
@@ -224,7 +243,9 @@ const TestPage = () => {
     if (status === 'success') {
       return (
         <div className={cn(`flex items-center space-x-4 rounded-sm p-4 text-xs m-1 ${backgroundColor}`, montserrat.className)}>
-          <CheckCircleIcon className="h-6 w-6 text-green-700" />
+          {/* <CheckCircleIcon className="h-6 w-6 text-green-700" /> */}
+          <CheckIcon className="h-5 w-5 text-green-700" />
+          
           <span>{successMessage}</span>
         </div>
       );
@@ -233,7 +254,7 @@ const TestPage = () => {
     if (status === 'error') {
       return (
         <div className={cn(`flex items-center space-x-4 text-red-500 rounded-sm text-xs p-4 m-1 ${backgroundColor}`)}>
-          <ExclamationTriangleIcon className="h-6 w-6" />
+          <ExclamationTriangleIcon className="h-5 w-5" />
           <span>{errorMessage}</span>
         </div>
       );
@@ -403,6 +424,14 @@ const TestPage = () => {
             successMessage="Playwright UI tests generated and passed."
             errorMessage="Playwright UI tests generation or execution failed."
             backgroundColor="bg-gray-100"
+          />
+
+          <StatusDisplay
+            status={apiTestStatus}
+            loadingMessage="Generating and executing API tests..."
+            successMessage="API tests generated and passed successfully."
+            errorMessage="API tests generation or execution encountered errors."
+            backgroundColor="bg-gray-200"
           />
 
         </div>
