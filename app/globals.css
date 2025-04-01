@@ -93,3 +93,29 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+.animate-progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.animate-progress-bar::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 100%;
+  background-color: blue;
+  animation: progress 2s linear infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
