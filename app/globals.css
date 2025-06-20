@@ -111,6 +111,16 @@ body,
   animation: progress 2s linear infinite;
 }
 
+.markdown-wrapper {
+  color: rgb(88 28 135); /* purple-900 */
+}
+
+.markdown-wrapper strong,
+.markdown-wrapper b {
+  font-weight: 700;
+  color: inherit;
+}
+
 @keyframes progress {
   0% {
     width: 0;
