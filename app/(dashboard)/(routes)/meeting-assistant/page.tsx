@@ -186,7 +186,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
     try {
       const userMessage = { 
         role: "user", 
-        content: `Please provide your opinion and analysis on the following meeting transcript or conversation: ${transcript.trim()}` 
+        content: transcript.trim()
       };
       const messages = [userMessage];
       
@@ -200,13 +200,17 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       
       if (error?.response?.status === 403) {
         errorMessage = "Access denied. Please check your permissions.";
+      } else if (error?.response?.status === 400) {
+        errorMessage = "Invalid request. Please check your input.";
+      } else if (error?.response?.status === 500) {
+        errorMessage = "Server error. Please try again later.";
       } else if (error?.response?.data?.message) {
         errorMessage = error.response.data.message;
       }
       
       setError(errorMessage);
       onError?.(errorMessage);
-      console.log(error);
+      console.log('[MEETING_ASSISTANT_ERROR]', error);
     } finally {
       setIsGettingAIResponse(false);
     }
@@ -260,15 +264,6 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         }`}>
           {isListening ? 'Listening...' : 'Not listening'}
         </div>
-
-        {aiResponse && (
-          <div>
-            <h3 className="text-lg font-semibold mb-2">AI Opinion:</h3>
-            <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-              <p className="text-purple-900 whitespace-pre-wrap">{aiResponse}</p>
-            </div>
-          </div>
-        )}
       </div>
 
       {error && (
@@ -292,6 +287,23 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
                 Click "Start Listening" and begin speaking...
               </p>
             )}
+          </div>
+        </div>
+      </div>
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">AI Opinion:</h3>
+          <div className="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
+            <p className="text-gray-900 whitespace-pre-wrap">
+               {aiResponse && (
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">AI Opinion:</h3>
+                        <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <p className="text-purple-900 whitespace-pre-wrap">{aiResponse}</p>
+                        </div>
+                    </div>
+                )}
+            </p>
           </div>
         </div>
       </div>
