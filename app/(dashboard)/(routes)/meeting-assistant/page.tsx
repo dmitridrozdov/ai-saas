@@ -290,7 +290,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
             </p>
             {!transcript && !interimTranscript && (
               <p className="text-gray-500 italic">
-                Click 'Start Listening' and begin speaking...
+                Click &apos;Start Listening&apos; and begin speaking...
               </p>
             )}
           </div>
