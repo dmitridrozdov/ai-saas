@@ -2,6 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import Markdown from "@/components/markdown";
+
+import { cn } from "@/lib/utils";
+import { Montserrat, Kanit } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
 interface SpeechRecognitionResult {
   transcript: string;
@@ -276,7 +282,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         <div>
           <h3 className="text-lg font-semibold mb-2">Transcript:</h3>
           <div className="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
-            <p className="text-gray-900 whitespace-pre-wrap">
+            <p className={cn("text-gray-900 whitespace-pre-wrap", montserrat.className)}>
               {transcript}
               {interimTranscript && (
                 <span className="text-gray-500 italic">{interimTranscript}</span>
@@ -293,14 +299,16 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold mb-2">AI Opinion:</h3>
-          <div className="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <div className="min-h-[100px] p-4 bg-purple-50 border border-purple-200 rounded-lg">
             <p className="text-gray-900 whitespace-pre-wrap">
                {aiResponse && (
                     <div>
-                        <h3 className="text-lg font-semibold mb-2">AI Opinion:</h3>
-                        <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                        <p className="text-purple-900 whitespace-pre-wrap">{aiResponse}</p>
-                        </div>
+                        {/* <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg"> */}
+                        <Markdown 
+                            // className={cn("text-purple-900 [&_strong]:font-bold [&_b]:font-bold", montserrat.className)} 
+                            text={aiResponse} 
+                        />
+                        {/* </div> */}
                     </div>
                 )}
             </p>
