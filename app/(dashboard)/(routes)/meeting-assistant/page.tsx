@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 
 interface SpeechRecognitionResult {
   transcript: string;
@@ -183,33 +184,29 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
     
     setIsGettingAIResponse(true);
     try {
-      // This is a placeholder - you'll need to implement your actual AI API call
-      // For example, OpenAI API, Claude API, or your custom AI service
-      const response = await fetch('/api/meetingassistant', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          transcript: transcript.trim(),
-          prompt: 'Please provide your opinion and analysis on the following meeting transcript or conversation:'
-        }),
-      });
+      const userMessage = { 
+        role: "user", 
+        content: `Please provide your opinion and analysis on the following meeting transcript or conversation: ${transcript.trim()}` 
+      };
+      const messages = [userMessage];
+      
+      const response = await axios.post('/api/meetingassistant', { messages });
 
-      if (!response.ok) {
-        throw new Error(`AI service error: ${response.status}`);
+      setAiResponse(response.data.content);
+      onAIResponse?.(response.data.content, transcript.trim());
+      
+    } catch (error: any) {
+      let errorMessage = "Something went wrong.";
+      
+      if (error?.response?.status === 403) {
+        errorMessage = "Access denied. Please check your permissions.";
+      } else if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
       }
-
-      const data = await response.json();
-      const aiOpinion = data.response || data.message || 'No response received';
       
-      setAiResponse(aiOpinion);
-      onAIResponse?.(aiOpinion, transcript.trim());
-      
-    } catch (error) {
-      const errorMessage = `Failed to get AI response: ${error instanceof Error ? error.message : 'Unknown error'}`;
       setError(errorMessage);
       onError?.(errorMessage);
+      console.log(error);
     } finally {
       setIsGettingAIResponse(false);
     }
