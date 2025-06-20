@@ -40,6 +40,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   
   const recognitionRef = useRef<any>(null);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const shouldRestartRef = useRef<boolean>(false);
 
   useEffect(() => {
     // Check if speech recognition is supported
@@ -58,6 +59,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       recognition.onstart = () => {
         setIsListening(true);
         setError(null);
+        shouldRestartRef.current = true;
       };
 
       recognition.onresult = (event: any) => {
@@ -104,19 +106,21 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         setError(errorMessage);
         onError?.(errorMessage);
         setIsListening(false);
+        shouldRestartRef.current = false;
       };
 
       recognition.onend = () => {
         setIsListening(false);
         
-        // Auto-restart if it was stopped unexpectedly and we want continuous listening
-        if (continuous && !error) {
+        // Only auto-restart if it was stopped unexpectedly and we want continuous listening
+        if (continuous && shouldRestartRef.current && !error) {
           restartTimeoutRef.current = setTimeout(() => {
-            if (recognitionRef.current && !isListening) {
+            if (recognitionRef.current && shouldRestartRef.current) {
               try {
                 recognitionRef.current.start();
               } catch (e) {
                 console.warn('Failed to restart recognition:', e);
+                shouldRestartRef.current = false;
               }
             }
           }, 100);
@@ -143,19 +147,23 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
     try {
       setError(null);
       setInterimTranscript('');
+      shouldRestartRef.current = true;
       recognitionRef.current.start();
     } catch (e) {
       setError('Failed to start speech recognition');
       onError?.('Failed to start speech recognition');
+      shouldRestartRef.current = false;
     }
   };
 
   const stopListening = () => {
+    shouldRestartRef.current = false; // Prevent auto-restart
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
     if (restartTimeoutRef.current) {
       clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
     }
     setIsListening(false);
   };
