@@ -56,6 +56,12 @@ const routes = [
     color: "text-red-400",
     href: '/agents',
   },
+  {
+    label: 'Meeting Assistant',
+    icon: Settings,
+    color: "text-slate-400",
+    href: '/meeting-assistant',
+  },
 ];
 
 export const Sidebar = ({
