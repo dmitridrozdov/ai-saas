@@ -1,6 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { cn } from "@/lib/utils";
+import { Montserrat, Kanit } from 'next/font/google';
+
+const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
 interface SpeechRecognitionResult {
   transcript: string;
@@ -225,7 +229,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         <div>
           <h3 className="text-lg font-semibold mb-2">Transcript:</h3>
           <div className="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
-            <p className="text-gray-900 whitespace-pre-wrap">
+            <p className={cn("text-gray-900 whitespace-pre-wrap", montserrat.className)}>
               {transcript}
               {interimTranscript && (
                 <span className="text-gray-500 italic">{interimTranscript}</span>
