@@ -33,7 +33,7 @@ declare global {
   }
 }
 
-const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
+const SpeechRecognitionComponent: React.FC<SpeechRecognitionComponentProps> = ({
   onTranscript,
   onError,
   onAIResponse,
@@ -319,4 +319,4 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   );
 };
 
-export default MeetingAssistant;
+export default SpeechRecognitionComponent
