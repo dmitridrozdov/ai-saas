@@ -1,10 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { cn } from "@/lib/utils";
-import { Montserrat, Kanit } from 'next/font/google';
-
-const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
 interface SpeechRecognitionResult {
   transcript: string;
@@ -16,6 +12,7 @@ interface SpeechRecognitionResult {
 interface SpeechRecognitionComponentProps {
   onTranscript?: (result: SpeechRecognitionResult) => void;
   onError?: (error: string) => void;
+  onAIResponse?: (response: string, originalTranscript: string) => void;
   continuous?: boolean;
   interimResults?: boolean;
   language?: string;
@@ -32,6 +29,7 @@ declare global {
 const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   onTranscript,
   onError,
+  onAIResponse,
   continuous = true,
   interimResults = true,
   language = 'en-US'
@@ -41,6 +39,8 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   const [interimTranscript, setInterimTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isSupported, setIsSupported] = useState(false);
+  const [isGettingAIResponse, setIsGettingAIResponse] = useState(false);
+  const [aiResponse, setAiResponse] = useState<string>('');
   
   const recognitionRef = useRef<any>(null);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -175,6 +175,44 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   const clearTranscript = () => {
     setTranscript('');
     setInterimTranscript('');
+    setAiResponse('');
+  };
+
+  const getAIResponse = async () => {
+    if (!transcript.trim()) return;
+    
+    setIsGettingAIResponse(true);
+    try {
+      // This is a placeholder - you'll need to implement your actual AI API call
+      // For example, OpenAI API, Claude API, or your custom AI service
+      const response = await fetch('/api/meetingassistant', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          transcript: transcript.trim(),
+          prompt: 'Please provide your opinion and analysis on the following meeting transcript or conversation:'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`AI service error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const aiOpinion = data.response || data.message || 'No response received';
+      
+      setAiResponse(aiOpinion);
+      onAIResponse?.(aiOpinion, transcript.trim());
+      
+    } catch (error) {
+      const errorMessage = `Failed to get AI response: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      setError(errorMessage);
+      onError?.(errorMessage);
+    } finally {
+      setIsGettingAIResponse(false);
+    }
   };
 
   if (!isSupported) {
@@ -210,6 +248,14 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
           Clear
         </button>
         
+        <button
+          onClick={getAIResponse}
+          className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!transcript.trim() || isGettingAIResponse}
+        >
+          {isGettingAIResponse ? '🤖 Analyzing...' : '🤖 Get AI Opinion'}
+        </button>
+        
         <div className={`px-3 py-1 rounded-full text-sm font-medium ${
           isListening 
             ? 'bg-green-100 text-green-800' 
@@ -217,6 +263,15 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         }`}>
           {isListening ? 'Listening...' : 'Not listening'}
         </div>
+
+        {aiResponse && (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">AI Opinion:</h3>
+            <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+              <p className="text-purple-900 whitespace-pre-wrap">{aiResponse}</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {error && (
@@ -229,7 +284,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         <div>
           <h3 className="text-lg font-semibold mb-2">Transcript:</h3>
           <div className="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
-            <p className={cn("text-gray-900 whitespace-pre-wrap", montserrat.className)}>
+            <p className="text-gray-900 whitespace-pre-wrap">
               {transcript}
               {interimTranscript && (
                 <span className="text-gray-500 italic">{interimTranscript}</span>
