@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Montserrat, Kanit } from 'next/font/google'
-import { Code, ImageIcon, MessageSquare, Settings, CheckCircle } from "lucide-react";
+import { Code, ImageIcon, MessageSquare, Settings, CheckCircle, Users } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -58,7 +58,7 @@ const routes = [
   },
   {
     label: 'Meeting Assistant',
-    icon: Settings,
+    icon: Users,
     color: "text-slate-400",
     href: '/meeting-assistant',
   },
