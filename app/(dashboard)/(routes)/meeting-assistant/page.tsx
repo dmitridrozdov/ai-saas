@@ -26,7 +26,7 @@ const MeetingAssistantPage: React.FC = () => {
     <div>
         <Heading
             title="Meeting Assistant"
-            description="Your personal writing coach for impeccable grammar and flawless writing."
+            description="Your intelligent meeting companion for seamless scheduling and effortless coordination.."
             icon={CheckCircle}
             iconColor="text-slate-400"
             bgColor="bg-white"
