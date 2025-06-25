@@ -4,7 +4,7 @@ import Markdown from "@/components/markdown";
 
 import { cn } from "@/lib/utils";
 import { Montserrat, Kanit } from 'next/font/google';
-import { Mic } from 'lucide-react';
+import { Mic, Trash2 } from 'lucide-react';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
@@ -249,9 +249,9 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         
         <button
           onClick={clearTranscript}
-          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors"
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-500 hover:bg-gray-600 text-white font-medium transition-colors"
         >
-          Clear
+          <Trash2 size={20} />
         </button>
         
         <button
