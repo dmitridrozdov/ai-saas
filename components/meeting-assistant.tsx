@@ -4,6 +4,7 @@ import Markdown from "@/components/markdown";
 
 import { cn } from "@/lib/utils";
 import { Montserrat, Kanit } from 'next/font/google';
+import { Mic } from 'lucide-react';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
@@ -234,18 +235,6 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   return (
     <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
       <div className="flex items-center gap-4 mb-4">
-        {/* <button
-          onClick={isListening ? stopListening : startListening}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-            isListening
-              ? 'bg-red-500 hover:bg-red-600 text-white'
-              : 'bg-blue-500 hover:bg-blue-600 text-white'
-          }`}
-          disabled={!isSupported}
-        >
-          {isListening ? '🎤 Stop Listening' : '🎤 Start Listening'}
-        </button> */}
-
         <button
           onClick={isListening ? stopListening : startListening}
           className={`w-12 h-12 rounded-full flex items-center justify-center font-medium transition-colors ${
@@ -255,7 +244,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
           }`}
           disabled={!isSupported}
         >
-          🎤
+          <Mic size={20} />
         </button>
         
         <button
