@@ -1,6 +1,8 @@
 'use client';
 
+import { Heading } from '@/components/heading';
 import MeetingAssistant from '@/components/meeting-assistant';
+import { CheckCircle } from 'lucide-react';
 import React from 'react';
 // Make sure MeetingAssistant.tsx exists in the same folder as this file.
 // If it's located elsewhere, update the import path accordingly.
@@ -21,16 +23,26 @@ const MeetingAssistantPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Meeting Assistant</h1>
-      <MeetingAssistant
-        onTranscript={handleTranscript}
-        onError={handleError}
-        onAIResponse={handleAIResponse}
-        continuous={true}
-        interimResults={true}
-        language="en-US"
-      />
+    <div>
+        <Heading
+            title="Meeting Assistant"
+            description="Your personal writing coach for impeccable grammar and flawless writing."
+            icon={CheckCircle}
+            iconColor="text-slate-400"
+            bgColor="bg-white"
+        />
+        <div className="px-4 lg:px-8">
+        <div>
+            <MeetingAssistant
+                onTranscript={handleTranscript}
+                onError={handleError}
+                onAIResponse={handleAIResponse}
+                continuous={true}
+                interimResults={true}
+                language="en-US"
+            />
+        </div>
+        </div>
     </div>
   );
 };
