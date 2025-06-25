@@ -2,7 +2,7 @@
 
 import { Heading } from '@/components/heading';
 import MeetingAssistant from '@/components/meeting-assistant';
-import { CheckCircle } from 'lucide-react';
+import { Users } from 'lucide-react';
 import React from 'react';
 // Make sure MeetingAssistant.tsx exists in the same folder as this file.
 // If it's located elsewhere, update the import path accordingly.
@@ -27,12 +27,11 @@ const MeetingAssistantPage: React.FC = () => {
         <Heading
             title="Meeting Assistant"
             description="Your intelligent meeting companion for seamless scheduling and effortless coordination.."
-            icon={CheckCircle}
+            icon={Users}
             iconColor="text-slate-400"
             bgColor="bg-white"
         />
         <div className="px-4 lg:px-8">
-        <div>
             <MeetingAssistant
                 onTranscript={handleTranscript}
                 onError={handleError}
@@ -41,7 +40,6 @@ const MeetingAssistantPage: React.FC = () => {
                 interimResults={true}
                 language="en-US"
             />
-        </div>
         </div>
     </div>
   );
