@@ -4,7 +4,8 @@ import Markdown from "@/components/markdown";
 
 import { cn } from "@/lib/utils";
 import { Montserrat, Kanit } from 'next/font/google';
-import { Mic, Trash2 } from 'lucide-react';
+import { Mic, Trash2, Bot, SpellCheck } from 'lucide-react';
+import { get } from 'http';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
@@ -225,6 +226,29 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
     }
   };
 
+  const getAIGrammarCheck = async () => {
+    if (!transcript.trim()) return;
+    
+    setIsGettingAIResponse(true);
+    try {
+      const userMessage = { 
+        role: "user", 
+        content: transcript.trim()
+      };
+      const messages = [userMessage];
+      
+      const response = await axios.post('/api/grammargemini', { messages });
+
+      setAiResponse(response.data.content);
+      onAIResponse?.(response.data.content, transcript.trim());
+      
+    } catch (error: any) {
+     errorHandler(error);
+    } finally {
+      setIsGettingAIResponse(false);
+    }
+  };
+
   if (!isSupported) {
     return (
       <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -258,12 +282,28 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
           <Trash2 size={20} />
         </button>
         
-        <button
+        {/* <button
           onClick={getAIResponse}
           className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!transcript.trim() || isGettingAIResponse}
         >
           {isGettingAIResponse ? '🤖 Analyzing...' : '🤖 Get AI Opinion'}
+        </button> */}
+
+        <button
+          onClick={getAIResponse}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!transcript.trim() || isGettingAIResponse}
+        >
+          <Bot size={20} />
+        </button>
+
+        <button
+          onClick={getAIGrammarCheck}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!transcript.trim() || isGettingAIResponse}
+        >
+          <SpellCheck size={20} />
         </button>
         
         <div className={`px-3 py-1 rounded-full text-sm font-medium ${
