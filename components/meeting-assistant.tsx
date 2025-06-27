@@ -4,8 +4,7 @@ import Markdown from "@/components/markdown";
 
 import { cn } from "@/lib/utils";
 import { Montserrat, Kanit } from 'next/font/google';
-import { Mic, Trash2, Bot, SpellCheck } from 'lucide-react';
-import { get } from 'http';
+import { Mic, Trash2, Bot, SpellCheck, HelpCircle } from 'lucide-react';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
@@ -203,7 +202,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       console.log('[MEETING_ASSISTANT_ERROR]', error);
   }
 
-  const getAIResponse = async () => {
+  const getAIAnswerQuestion = async () => {
     if (!transcript.trim()) return;
     
     setIsGettingAIResponse(true);
@@ -214,7 +213,30 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       };
       const messages = [userMessage];
       
-      const response = await axios.post('/api/meetingassistant', { messages });
+      const response = await axios.post('/api/answer-question', { messages });
+
+      setAiResponse(response.data.content);
+      onAIResponse?.(response.data.content, transcript.trim());
+      
+    } catch (error: any) {
+     errorHandler(error);
+    } finally {
+      setIsGettingAIResponse(false);
+    }
+  };
+
+    const getAIOpinion = async () => {
+    if (!transcript.trim()) return;
+    
+    setIsGettingAIResponse(true);
+    try {
+      const userMessage = { 
+        role: "user", 
+        content: transcript.trim()
+      };
+      const messages = [userMessage];
+      
+      const response = await axios.post('/api/ai-opinion', { messages });
 
       setAiResponse(response.data.content);
       onAIResponse?.(response.data.content, transcript.trim());
@@ -291,7 +313,15 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
         </button> */}
 
         <button
-          onClick={getAIResponse}
+          onClick={getAIAnswerQuestion}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!transcript.trim() || isGettingAIResponse}
+        >
+          <HelpCircle size={20} />
+        </button>
+
+         <button
+          onClick={getAIOpinion}
           className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!transcript.trim() || isGettingAIResponse}
         >
