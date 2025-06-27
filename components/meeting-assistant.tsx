@@ -184,6 +184,24 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
     setAiResponse('');
   };
 
+  const errorHandler = (error: any) => {
+     let errorMessage = "Something went wrong.";
+      
+      if (error?.response?.status === 403) {
+        errorMessage = "Access denied. Please check your permissions.";
+      } else if (error?.response?.status === 400) {
+        errorMessage = "Invalid request. Please check your input.";
+      } else if (error?.response?.status === 500) {
+        errorMessage = "Server error. Please try again later.";
+      } else if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      
+      setError(errorMessage);
+      onError?.(errorMessage);
+      console.log('[MEETING_ASSISTANT_ERROR]', error);
+  }
+
   const getAIResponse = async () => {
     if (!transcript.trim()) return;
     
@@ -201,21 +219,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       onAIResponse?.(response.data.content, transcript.trim());
       
     } catch (error: any) {
-      let errorMessage = "Something went wrong.";
-      
-      if (error?.response?.status === 403) {
-        errorMessage = "Access denied. Please check your permissions.";
-      } else if (error?.response?.status === 400) {
-        errorMessage = "Invalid request. Please check your input.";
-      } else if (error?.response?.status === 500) {
-        errorMessage = "Server error. Please try again later.";
-      } else if (error?.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      }
-      
-      setError(errorMessage);
-      onError?.(errorMessage);
-      console.log('[MEETING_ASSISTANT_ERROR]', error);
+     errorHandler(error);
     } finally {
       setIsGettingAIResponse(false);
     }
