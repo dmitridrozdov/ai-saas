@@ -378,13 +378,13 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
                {aiResponse && (
                     <div>
                         {/* <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg"> */}
-                        <Markdown 
+                        {/* <Markdown 
                             // className={cn("text-purple-900 [&_strong]:font-bold [&_b]:font-bold", montserrat.className)} 
                             text={aiResponse} 
-                        />
+                        /> */}
                         <CustomMarkdown 
                           content={aiResponse}
-                          font="Georgia, serif"
+                          font="Tahoma, sans-serif"
                           fontSize="18px"
                         />
                         {/* </div> */}
