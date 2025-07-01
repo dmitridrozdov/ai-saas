@@ -5,6 +5,7 @@ import Markdown from "@/components/markdown";
 import { cn } from "@/lib/utils";
 import { Montserrat, Kanit } from 'next/font/google';
 import { Mic, Trash2, Bot, SpellCheck, HelpCircle } from 'lucide-react';
+import CustomMarkdown from './custom-markdown';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 
@@ -380,6 +381,11 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
                         <Markdown 
                             // className={cn("text-purple-900 [&_strong]:font-bold [&_b]:font-bold", montserrat.className)} 
                             text={aiResponse} 
+                        />
+                        <CustomMarkdown 
+                          content={aiResponse}
+                          font="Georgia, serif"
+                          fontSize="18px"
                         />
                         {/* </div> */}
                     </div>
