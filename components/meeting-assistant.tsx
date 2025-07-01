@@ -8,6 +8,7 @@ import { Mic, Trash2, Bot, SpellCheck, HelpCircle } from 'lucide-react';
 import CustomMarkdown from './custom-markdown';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
+const kanit = Kanit({ weight: '500', subsets: ['latin'] })
 
 interface SpeechRecognitionResult {
   transcript: string;
@@ -354,7 +355,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
 
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold mb-2">Transcript:</h3>
+          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>Transcript:</h3>
           <div className="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
             <p className={cn("text-gray-900 whitespace-pre-wrap", montserrat.className)}>
               {transcript}
@@ -363,7 +364,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
               )}
             </p>
             {!transcript && !interimTranscript && (
-              <p className="text-gray-500 italic">
+              <p className={cn("text-gray-500 whitespace-pre-wrap", montserrat.className)}>
                 Click &apos;Start Listening&apos; and begin speaking...
               </p>
             )}
@@ -372,7 +373,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       </div>
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold mb-2">AI Opinion:</h3>
+          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>AI Opinion:</h3>
           <div className="min-h-[100px] p-4 bg-purple-50 border border-purple-200 rounded-lg">
             <p className="text-gray-900 whitespace-pre-wrap">
                {aiResponse && (
