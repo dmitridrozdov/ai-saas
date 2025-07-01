@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const result = await model.generateContent(
-      'Please identify and answer any questions found in this meeting transcript: ' + 
+      'Answer on that question(s): ' + 
       messages[0].content
     );
     
