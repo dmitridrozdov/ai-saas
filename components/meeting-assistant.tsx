@@ -373,7 +373,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       </div>
       <div className="space-y-4">
         <div>
-          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>AI Opinion:</h3>
+          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>AI:</h3>
           <div className="min-h-[100px] p-4 bg-purple-50 border border-purple-200 rounded-lg">
             <p className="text-gray-900 whitespace-pre-wrap">
                {aiResponse && (
