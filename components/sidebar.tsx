@@ -7,7 +7,7 @@ import { Code, ImageIcon, MessageSquare, Settings, CheckCircle, Users } from "lu
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { FreeCounter } from "@/components/free-counter";
+// import { FreeCounter } from "@/components/free-counter";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '700', subsets: ['latin']});
@@ -103,10 +103,10 @@ export const Sidebar = ({
         </div>
       </div>
       
-      <FreeCounter 
+      {/* <FreeCounter 
         apiLimitCount={apiLimitCount} 
         isPro={isPro}
-      />
+      /> */}
 
     </div>
   );
