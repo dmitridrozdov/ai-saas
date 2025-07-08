@@ -21,6 +21,7 @@ import { Montserrat, Kanit } from 'next/font/google';
 import { CopyIcon } from '@/components/copy-icon'
 import Markdown from "@/components/markdown";
 import { Separator } from "@/components/ui/separator";
+import {  Trash2 } from 'lucide-react';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 const kanit = Kanit ({ weight: '100', subsets: ['latin']})
@@ -247,14 +248,22 @@ const ConversationPage = () => {
                                 >
                                     OpenAI
                                 </Button>
-                                <Button 
+                                {/* <Button 
                                     variant='clear' 
                                     onClick={form.handleSubmit(onClear)} 
                                     disabled={isLoading} 
                                     className="flex-1 py-1 text-xs sm:text-sm"
                                 >
                                     Clear
-                                </Button>
+                                </Button> */}
+
+                                <button
+                                    onClick={form.handleSubmit(onClear)}
+                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-500 hover:bg-gray-600 text-white font-medium transition-colors"
+                                >
+                                    <Trash2 size={20} />
+                                </button>
+
                             </div>
                         </form>
                     </Form>
