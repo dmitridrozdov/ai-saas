@@ -240,22 +240,21 @@ const ConversationPage = () => {
                                 >
                                     Claude
                                 </Button>
-                                <Button 
+                                {/* <Button 
                                     variant='openai' 
                                     onClick={form.handleSubmit(openaiVerify)} 
                                     disabled={isLoading} 
                                     className="flex-1 py-1 text-xs sm:text-sm"
                                 >
                                     OpenAI
-                                </Button>
-                                {/* <Button 
-                                    variant='clear' 
-                                    onClick={form.handleSubmit(onClear)} 
-                                    disabled={isLoading} 
-                                    className="flex-1 py-1 text-xs sm:text-sm"
-                                >
-                                    Clear
                                 </Button> */}
+
+                                 <button
+                                    onClick={form.handleSubmit(openaiVerify)}
+                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-medium transition-colors"
+                                >
+                                    OAI
+                                </button>
 
                                 <button
                                     onClick={form.handleSubmit(onClear)}
