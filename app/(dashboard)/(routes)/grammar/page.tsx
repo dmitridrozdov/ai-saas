@@ -223,17 +223,14 @@ const ConversationPage = () => {
                                 )}
                             />
                             <div className={cn("col-span-12 lg:col-span-2 w-full flex flex-wrap gap-1 md:gap-2", montserrat.className)}>
-                               
-                                <Button 
-                                    variant='gemini' 
-                                    type="submit" 
-                                    disabled={isLoading} 
-                                    className="flex-1 py-1 text-xs sm:text-sm"
-                                >
-                                    Gemini
-                                </Button>
 
-                                
+                                 <button
+                                    type="submit" 
+                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors"
+                                >
+                                    G
+                                </button>
+
                                 <button
                                     onClick={form.handleSubmit(claudeVerify)}
                                     className="w-12 h-12 rounded-full flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors"
