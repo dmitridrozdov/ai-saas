@@ -232,22 +232,14 @@ const ConversationPage = () => {
                                 >
                                     Gemini
                                 </Button>
-                                <Button 
-                                    variant='claude' 
+
+                                
+                                <button
                                     onClick={form.handleSubmit(claudeVerify)}
-                                    disabled={isLoading} 
-                                    className="flex-1 py-1 text-xs sm:text-sm"
+                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors"
                                 >
-                                    Claude
-                                </Button>
-                                {/* <Button 
-                                    variant='openai' 
-                                    onClick={form.handleSubmit(openaiVerify)} 
-                                    disabled={isLoading} 
-                                    className="flex-1 py-1 text-xs sm:text-sm"
-                                >
-                                    OpenAI
-                                </Button> */}
+                                    CL
+                                </button>
 
                                  <button
                                     onClick={form.handleSubmit(openaiVerify)}
