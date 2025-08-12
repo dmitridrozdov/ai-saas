@@ -227,7 +227,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
     }
   };
 
-    const getAIOpinion = async () => {
+  const getAIOpinion = async () => {
     if (!transcript.trim()) return;
     
     setIsGettingAIResponse(true);
