@@ -249,6 +249,29 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       setIsGettingAIResponse(false);
     }
   };
+  
+   const getAISummary = async () => {
+    if (!transcript.trim()) return;
+    
+    setIsGettingAIResponse(true);
+    try {
+      const userMessage = { 
+        role: "user", 
+        content: transcript.trim()
+      };
+      const messages = [userMessage];
+      
+      const response = await axios.post('/api/ai-summary', { messages });
+
+      setAiResponse(response.data.content);
+      onAIResponse?.(response.data.content, transcript.trim());
+      
+    } catch (error: any) {
+     errorHandler(error);
+    } finally {
+      setIsGettingAIResponse(false);
+    }
+  };
 
   const getAIGrammarCheck = async () => {
     if (!transcript.trim()) return;
@@ -322,7 +345,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
           <HelpCircle size={20} />
         </button>
 
-         <button
+        <button
           onClick={getAIOpinion}
           className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!transcript.trim() || isGettingAIResponse}
