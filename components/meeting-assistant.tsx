@@ -4,7 +4,7 @@ import Markdown from "@/components/markdown";
 
 import { cn } from "@/lib/utils";
 import { Montserrat, Kanit } from 'next/font/google';
-import { Mic, Trash2, Bot, SpellCheck, HelpCircle } from 'lucide-react';
+import { Mic, Trash2, Bot, SpellCheck, HelpCircle, FileText } from 'lucide-react';
 import CustomMarkdown from './custom-markdown';
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
@@ -351,6 +351,14 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
           disabled={!transcript.trim() || isGettingAIResponse}
         >
           <Bot size={20} />
+        </button>
+
+        <button
+          onClick={getAISummary}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!transcript.trim() || isGettingAIResponse}
+        >
+          <FileText size={20} />
         </button>
 
         <button
