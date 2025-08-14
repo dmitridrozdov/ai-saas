@@ -189,6 +189,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
     setAiAnswer('');
     setAiOpinion('');
     setAiSummary('');
+    setAiGrammarCheck('');
   };
 
   const errorHandler = (error: any) => {
@@ -439,6 +440,23 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
                     <div>
                         <CustomMarkdown 
                           content={aiOpinion}
+                          font="Tahoma, sans-serif"
+                          fontSize="18px"
+                        />
+                    </div>
+                )}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>AI Summary:</h3>
+          <div className="min-h-[100px] p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <p className="text-gray-900 whitespace-pre-wrap">
+               {aiSummary && (
+                    <div>
+                        <CustomMarkdown 
+                          content={aiSummary}
                           font="Tahoma, sans-serif"
                           fontSize="18px"
                         />
