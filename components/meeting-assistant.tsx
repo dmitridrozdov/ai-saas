@@ -48,7 +48,10 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [isSupported, setIsSupported] = useState(false);
   const [isGettingAIResponse, setIsGettingAIResponse] = useState(false);
-  const [aiResponse, setAiResponse] = useState<string>('');
+  const [aiAnswer, setAiAnswer] = useState<string>('');
+  const [aiOpinion, setAiOpinion] = useState<string>('');
+  const [aiSummary, setAiSummary] = useState<string>('');
+  const [aiGrammarCheck, setAiGrammarCheck] = useState<string>('');
   
   const recognitionRef = useRef<any>(null);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -183,7 +186,9 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   const clearTranscript = () => {
     setTranscript('');
     setInterimTranscript('');
-    setAiResponse('');
+    setAiAnswer('');
+    setAiOpinion('');
+    setAiSummary('');
   };
 
   const errorHandler = (error: any) => {
@@ -217,7 +222,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       
       const response = await axios.post('/api/answer-question', { messages });
 
-      setAiResponse(response.data.content);
+      setAiAnswer(response.data.content);
       onAIResponse?.(response.data.content, transcript.trim());
       
     } catch (error: any) {
@@ -240,7 +245,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       
       const response = await axios.post('/api/ai-opinion', { messages });
 
-      setAiResponse(response.data.content);
+      setAiOpinion(response.data.content);
       onAIResponse?.(response.data.content, transcript.trim());
       
     } catch (error: any) {
@@ -263,7 +268,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       
       const response = await axios.post('/api/ai-summary', { messages });
 
-      setAiResponse(response.data.content);
+      setAiSummary(response.data.content);
       onAIResponse?.(response.data.content, transcript.trim());
       
     } catch (error: any) {
@@ -286,7 +291,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       
       const response = await axios.post('/api/grammargemini', { messages });
 
-      setAiResponse(response.data.content);
+      setAiGrammarCheck(response.data.content);
       onAIResponse?.(response.data.content, transcript.trim());
       
     } catch (error: any) {
@@ -404,10 +409,10 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       </div>
       <div className="space-y-4">
         <div>
-          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>AI:</h3>
+          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>AI Answer:</h3>
           <div className="min-h-[100px] p-4 bg-purple-50 border border-purple-200 rounded-lg">
             <p className="text-gray-900 whitespace-pre-wrap">
-               {aiResponse && (
+               {aiAnswer && (
                     <div>
                         {/* <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg"> */}
                         {/* <Markdown 
@@ -415,7 +420,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
                             text={aiResponse} 
                         /> */}
                         <CustomMarkdown 
-                          content={aiResponse}
+                          content={aiAnswer}
                           font="Tahoma, sans-serif"
                           fontSize="18px"
                         />
@@ -425,6 +430,24 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
             </p>
           </div>
         </div>
+
+        <div>
+          <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>AI Opinion:</h3>
+          <div className="min-h-[100px] p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <p className="text-gray-900 whitespace-pre-wrap">
+               {aiOpinion && (
+                    <div>
+                        <CustomMarkdown 
+                          content={aiOpinion}
+                          font="Tahoma, sans-serif"
+                          fontSize="18px"
+                        />
+                    </div>
+                )}
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   );
