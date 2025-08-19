@@ -37,7 +37,14 @@ const ConversationPage = () => {
     const [rephrases, setRepharses] = useState<string[]>([])
 
     const [geminiResult, setGeminiResult] = useState('')
-    const [geminiResultList, setGeminiResultList] = useState<string[]>([])
+    // const [geminiResultList, setGeminiResultList] = useState<string[]>([])
+
+    const [geminiCorrected, setGeminiCorrected] = useState('')
+    const [geminiImproved, setGeminiImproved] = useState('')
+    const [geminiShortened, setGeminiShortened] = useState('')
+    const [geminiRephrasedFriendly, setGeminiRephrasedFriendly] = useState('')
+    const [geminiRephrasedFormal, setGeminiRephrasedFormal] = useState('')
+
 
     const [claudeResult, setClaudeResult] = useState('')
 
@@ -109,6 +116,58 @@ const ConversationPage = () => {
         return lines.map(line => removeTextBetweenStars(line)).filter(line => line.trim() !== "")
     }
 
+    // Function to parse grammar correction results and update React state
+    const parseGrammarResult = (
+        result: string,
+        setGeminiCorrected: (value: string) => void,
+        setGeminiImproved: (value: string) => void,
+        setGeminiShortened: (value: string) => void,
+        setGeminiRephrasedFriendly: (value: string) => void,
+        setGeminiRephrasedFormal: (value: string) => void
+        ) => {
+        try {
+            // Helper function to extract content between XML tags
+            const extractContent = (text: string, tagName: string): string => {
+                const regex = new RegExp(`<${tagName}>(.*?)<\/${tagName}>`, 'gs');
+                const match = regex.exec(text);
+                return match ? match[1].trim() : '';
+            };
+
+            // Parse each section
+            const corrected = extractContent(result, 'corrected_sentence');
+            const improved = extractContent(result, 'improved_sentence');
+            const shortened = extractContent(result, 'shortened_sentence');
+            const friendly = extractContent(result, 'friendly_tone');
+            const formal = extractContent(result, 'formal_tone');
+
+            // Update state with parsed values
+            setGeminiCorrected(corrected);
+            setGeminiImproved(improved);
+            setGeminiShortened(shortened);
+            setGeminiRephrasedFriendly(friendly);
+            setGeminiRephrasedFormal(formal);
+
+            // Optional: Log results for debugging
+            console.log('Parsed grammar results:', {
+                corrected,
+                improved,
+                shortened,
+                friendly,
+                formal
+            });
+
+        } catch (error) {
+            console.error('Error parsing grammar result:', error);
+            
+            // Set empty strings on error
+            setGeminiCorrected('');
+            setGeminiImproved('');
+            setGeminiShortened('');
+            setGeminiRephrasedFriendly('');
+            setGeminiRephrasedFormal('');
+        }
+    };
+
     const claudeVerify = async (values: z.infer<typeof formSchema>) => {
         try {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
@@ -141,7 +200,15 @@ const ConversationPage = () => {
             const response = await axios.post('/api/grammargemini', { messages: newMessages });
 
             setGeminiResult(response.data.content)
-            setGeminiResultList(removeBetweenStars(response.data.content))
+            // setGeminiResultList(removeBetweenStars(response.data.content))
+            parseGrammarResult(
+                response.data.content,
+                setGeminiCorrected,
+                setGeminiImproved,
+                setGeminiShortened,
+                setGeminiRephrasedFriendly,
+                setGeminiRephrasedFormal
+            );
 
           } catch (error: any) {
             if (error?.response?.status === 403) {
@@ -187,7 +254,14 @@ const ConversationPage = () => {
         setResult('')
         setRepharses([])
         setGeminiResult('')
-        setGeminiResultList([])
+        // setGeminiResultList([])
+
+        setGeminiCorrected('');
+        setGeminiImproved('');
+        setGeminiShortened('');
+        setGeminiRephrasedFriendly('');
+        setGeminiRephrasedFormal('');
+
         setClaudeResult('')
     }
 
@@ -269,17 +343,17 @@ const ConversationPage = () => {
                             <p className={cn("text-sm text-blue-500", kanit.className)}>Correct Gemini</p>
                             <div className="flex flex-col gap-y-4">
                                 <div 
-                                    key={geminiResultList[0]} 
+                                    key={geminiCorrected} 
                                     className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-violet-50 border border-black/10 shadow-sm", montserrat.className)}>
                                     <p className="text-sm">
-                                        {geminiResultList[0]}
+                                        {geminiCorrected}
                                     </p>
                                     <span style={{ marginLeft: 'auto' }}>
-                                        <CopyIcon result={geminiResultList[0]} />
+                                        <CopyIcon result={geminiCorrected} />
                                     </span>
                                 </div>
                             </div>
-                            <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties Gemini</p>
+                            {/* <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties Gemini</p>
                             <div className="flex flex-col gap-y-4">
                                 {geminiResultList.slice(1)
                                 .map(res => removeNumberedPrefix(res))
@@ -295,7 +369,7 @@ const ConversationPage = () => {
                                         </span>
                                     </div>
                                 ))}
-                            </div>
+                            </div> */}
                             <Separator />
                         </div>
                     )}
