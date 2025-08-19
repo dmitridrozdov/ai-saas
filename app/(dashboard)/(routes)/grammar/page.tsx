@@ -353,23 +353,20 @@ const ConversationPage = () => {
                                     </span>
                                 </div>
                             </div>
-                            {/* <p className={cn("text-sm text-blue-500", kanit.className)}>Varieties Gemini</p>
+                            <p className={cn("text-sm text-blue-500", kanit.className)}>Improved Gemini</p>
                             <div className="flex flex-col gap-y-4">
-                                {geminiResultList.slice(1)
-                                .map(res => removeNumberedPrefix(res))
-                                .map(gresult => (
-                                    <div 
-                                        key={gresult} 
-                                        className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-violet-50 border border-black/10 shadow-sm", montserrat.className)}>
-                                        <p className="text-sm">
-                                            {gresult}
-                                        </p>
-                                        <span style={{ marginLeft: 'auto' }}>
-                                            <CopyIcon result={gresult} />
-                                        </span>
-                                    </div>
-                                ))}
-                            </div> */}
+                                <div
+                                    key={geminiImproved}
+                                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-violet-50 border border-black/10 shadow-sm", montserrat.className)}>
+                                    <p className="text-sm">
+                                        {geminiImproved}
+                                    </p>
+                                    <span style={{ marginLeft: 'auto' }}>
+                                        <CopyIcon result={geminiImproved} />
+                                    </span>
+                                </div>
+                            </div>
+                            <p className={cn("text-sm text-blue-500", kanit.className)}>Shortened Gemini</p>
                             <Separator />
                         </div>
                     )}
