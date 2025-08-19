@@ -22,6 +22,7 @@ import { CopyIcon } from '@/components/copy-icon'
 import Markdown from "@/components/markdown";
 import { Separator } from "@/components/ui/separator";
 import {  Trash2 } from 'lucide-react';
+import ResultDisplay from "@/components/result-display";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 const kanit = Kanit ({ weight: '100', subsets: ['latin']})
@@ -340,33 +341,45 @@ const ConversationPage = () => {
                     )}
                     {!isLoading && geminiResult !== '' && (
                         <div className="flex flex-col gap-y-4">
-                            <p className={cn("text-sm text-blue-500", kanit.className)}>Correct Gemini</p>
-                            <div className="flex flex-col gap-y-4">
-                                <div 
-                                    key={geminiCorrected} 
-                                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-violet-50 border border-black/10 shadow-sm", montserrat.className)}>
-                                    <p className="text-sm">
-                                        {geminiCorrected}
-                                    </p>
-                                    <span style={{ marginLeft: 'auto' }}>
-                                        <CopyIcon result={geminiCorrected} />
-                                    </span>
-                                </div>
-                            </div>
-                            <p className={cn("text-sm text-blue-500", kanit.className)}>Improved Gemini</p>
-                            <div className="flex flex-col gap-y-4">
-                                <div
-                                    key={geminiImproved}
-                                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-sm", "bg-violet-50 border border-black/10 shadow-sm", montserrat.className)}>
-                                    <p className="text-sm">
-                                        {geminiImproved}
-                                    </p>
-                                    <span style={{ marginLeft: 'auto' }}>
-                                        <CopyIcon result={geminiImproved} />
-                                    </span>
-                                </div>
-                            </div>
-                            <p className={cn("text-sm text-blue-500", kanit.className)}>Shortened Gemini</p>
+                           <ResultDisplay
+                                title="Correct Gemini"
+                                content={geminiCorrected}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Improved Gemini"
+                                content={geminiImproved}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Shortened Gemini"
+                                content={geminiShortened}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Friendly Gemini"
+                                content={geminiRephrasedFriendly}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Formal Gemini"
+                                content={geminiRephrasedFormal}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
                             <Separator />
                         </div>
                     )}
