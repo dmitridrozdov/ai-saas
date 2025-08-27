@@ -1,5 +1,6 @@
 import { Anthropic } from '@anthropic-ai/sdk';
 import { NextResponse } from 'next/server';
+import { grammarPrompt } from "@/constants";
 
 export async function POST(request: Request) {
   try {
@@ -14,13 +15,15 @@ export async function POST(request: Request) {
       apiKey: process.env.CLAUDE_API_KEY,
     });
 
+    const grammartPromptWithInput = grammarPrompt + messages[0].content;
+
     const response = await anthropic.messages.create({
       model: "claude-3-opus-20240229",
       max_tokens: 1000,
       messages: [
         {
           role: "user",
-          content: `Correct English sentence and rephrase 3 times: ${messages[0].content}`
+          content: grammartPromptWithInput
         }
       ]
     });
