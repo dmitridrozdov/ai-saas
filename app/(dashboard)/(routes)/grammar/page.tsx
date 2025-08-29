@@ -38,13 +38,18 @@ const ConversationPage = () => {
     const [rephrases, setRepharses] = useState<string[]>([])
 
     const [geminiResult, setGeminiResult] = useState('')
-    // const [geminiResultList, setGeminiResultList] = useState<string[]>([])
 
     const [geminiCorrected, setGeminiCorrected] = useState('')
     const [geminiImproved, setGeminiImproved] = useState('')
     const [geminiShortened, setGeminiShortened] = useState('')
     const [geminiRephrasedFriendly, setGeminiRephrasedFriendly] = useState('')
     const [geminiRephrasedFormal, setGeminiRephrasedFormal] = useState('')
+
+    const [claudeCorrected, setClaudeCorrected] = useState('')
+    const [claudeImproved, setClaudeImproved] = useState('')
+    const [claudeShortened, setClaudeShortened] = useState('')
+    const [claudeRephrasedFriendly, setClaudeRephrasedFriendly] = useState('')
+    const [claudeRephrasedFormal, setClaudeRephrasedFormal] = useState('')
 
 
     const [claudeResult, setClaudeResult] = useState('')
@@ -169,6 +174,58 @@ const ConversationPage = () => {
         }
     };
 
+    // Function to parse grammar correction results from Claude and update React state
+    const parseClaudeGrammarResult = (
+        result: string,
+        setClaudeCorrected: (value: string) => void,
+        setClaudeImproved: (value: string) => void,
+        setClaudeShortened: (value: string) => void,
+        setClaudeRephrasedFriendly: (value: string) => void,
+        setClaudeRephrasedFormal: (value: string) => void
+        ) => {
+        try {
+            // Helper function to extract content between XML tags
+            const extractContent = (text: string, tagName: string): string => {
+                const regex = new RegExp(`<${tagName}>(.*?)<\/${tagName}>`, 'gs');
+                const match = regex.exec(text);
+                return match ? match[1].trim() : '';
+            };
+
+            // Parse each section
+            const corrected = extractContent(result, 'corrected_sentence');
+            const improved = extractContent(result, 'improved_sentence');
+            const shortened = extractContent(result, 'shortened_sentence');
+            const friendly = extractContent(result, 'friendly_tone');
+            const formal = extractContent(result, 'formal_tone');
+
+            // Update state with parsed values
+            setClaudeCorrected(corrected);
+            setClaudeImproved(improved);
+            setClaudeShortened(shortened);
+            setClaudeRephrasedFriendly(friendly);
+            setClaudeRephrasedFormal(formal);
+
+            // Optional: Log results for debugging
+            console.log('Parsed grammar results:', {
+                corrected,
+                improved,
+                shortened,
+                friendly,
+                formal
+            });
+
+        } catch (error) {
+            console.error('Error parsing grammar result:', error);
+            
+            // Set empty strings on error
+            setClaudeCorrected('');
+            setClaudeImproved('');
+            setClaudeShortened('');
+            setClaudeRephrasedFriendly('');
+            setClaudeRephrasedFormal('');
+        }
+    };
+
     const claudeVerify = async (values: z.infer<typeof formSchema>) => {
         try {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
@@ -180,6 +237,15 @@ const ConversationPage = () => {
             const textContent = response.data.response;
 
             setClaudeResult(textContent);
+
+            parseClaudeGrammarResult(
+                textContent,
+                setClaudeCorrected,
+                setClaudeImproved,
+                setClaudeShortened,
+                setClaudeRephrasedFriendly,
+                setClaudeRephrasedFormal
+            );
 
           } catch (error: any) {
             if (error?.response?.status === 403) {
@@ -201,7 +267,7 @@ const ConversationPage = () => {
             const response = await axios.post('/api/grammargemini', { messages: newMessages });
 
             setGeminiResult(response.data.content)
-            // setGeminiResultList(removeBetweenStars(response.data.content))
+
             parseGrammarResult(
                 response.data.content,
                 setGeminiCorrected,
@@ -388,6 +454,51 @@ const ConversationPage = () => {
                         <div className="flex flex-col gap-y-4">
                             <p className={cn("text-xl text-amber-700", requestResult.className)}>Claude Results</p>
                             <Markdown text={claudeResult} />
+                            <Separator />
+                        </div>
+                    )}
+
+                    {!isLoading && claudeResult !== '' && (
+                        <div className="flex flex-col gap-y-4">
+                           <ResultDisplay
+                                title="Correct Claude"
+                                content={claudeCorrected}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Improved Claude"
+                                content={claudeImproved}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Shortened Claude"
+                                content={claudeShortened}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Friendly Claude"
+                                content={claudeRephrasedFriendly}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
+                            
+                            <ResultDisplay
+                                title="Formal Claude"
+                                content={claudeRephrasedFormal}
+                                kanit={kanit}
+                                montserrat={montserrat}
+                                CopyIcon={CopyIcon}
+                            />
                             <Separator />
                         </div>
                     )}
