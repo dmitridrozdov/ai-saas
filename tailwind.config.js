@@ -16,6 +16,13 @@ module.exports = {
       },
     },
     extend: {
+       backgroundImage: {
+        'grid-pattern': `linear-gradient(rgba(200, 200, 200, 0.3) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(200, 200, 200, 0.3) 1px, transparent 1px)`,
+      },
+      backgroundSize: {
+        'grid': '50px 50px',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
