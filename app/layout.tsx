@@ -22,7 +22,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <CrispProvider />
-        <body className={inter.className}>
+        <body className={`${inter.className} bg-grid-pattern [background-size:50px_50px]`}>
           <ModalProvider />
           <ToasterProvider />
           {children}
