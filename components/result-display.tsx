@@ -7,17 +7,16 @@ const cn = (...classes: any[]) => classes.filter(Boolean).join(' ');
 interface ResultDisplayProps {
   title: string;
   content: string;
-  kanit: any;
-  montserrat: any;
-  CopyIcon: React.ComponentType<{ result: string }>;
+  headerFont: any;
+  contentFont: any;
 }
+
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({
   title,
   content,
-  kanit,
-  montserrat,
-  CopyIcon
+  headerFont,
+  contentFont,
 }) => {
   const [copied, setCopied] = React.useState(false);
 
@@ -66,7 +65,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({
               copied 
                 ? "from-green-600 to-emerald-600" 
                 : "from-blue-600 to-violet-600",
-              kanit.className
+              headerFont.className
             )}>
               {copied ? "✓ Copied!" : title}
             </h3>
@@ -83,7 +82,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({
               {/* Content text */}
               <p className={cn(
                 "text-sm leading-relaxed text-gray-700",
-                montserrat.className
+                contentFont.className
               )}>
                 {content}
               </p>
