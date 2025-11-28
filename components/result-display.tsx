@@ -87,10 +87,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({
                 {content}
               </p>
             </div>
-
-            {/* Decorative corner accent */}
-            {/* <div className="absolute -bottom-1 -right-1 w-16 h-16 bg-gradient-to-tl from-violet-100 to-transparent rounded-tl-3xl opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:w-24 group-hover:h-24 pointer-events-none"></div> */}
-          </div>
+         </div>
         </div>
 
         {/* Bottom accent line */}
