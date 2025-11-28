@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/loader";
-import { Montserrat, Kanit } from 'next/font/google';
+import { Montserrat, Kanit, Outfit, Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import { CopyIcon } from '@/components/copy-icon'
 import Markdown from "@/components/markdown";
 import { Separator } from "@/components/ui/separator";
@@ -26,6 +26,9 @@ import ResultDisplay from "@/components/result-display";
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 const kanit = Kanit ({ weight: '100', subsets: ['latin']})
 const requestResult = Kanit ({ weight: '500', subsets: ['latin']})
+const outfit = Outfit ({ weight: '300', subsets: ['latin']})
+const inter = Inter ({ weight: '300', subsets: ['latin']})
+const plusJakartaSans = Plus_Jakarta_Sans ({ weight: '300', subsets: ['latin']})
 
 const ConversationPage = () => {
     const router = useRouter();
@@ -409,36 +412,36 @@ const ConversationPage = () => {
                            <ResultDisplay
                                 title="Correct Gemini"
                                 content={geminiCorrected}
-                                headerFont={kanit}
-                                contentFont={montserrat}
+                                headerFont={outfit}
+                                contentFont={plusJakartaSans}
                             />
                             
                             <ResultDisplay
                                 title="Improved Gemini"
                                 content={geminiImproved}
-                                headerFont={kanit}
-                                contentFont={montserrat}
+                                headerFont={outfit}
+                                contentFont={plusJakartaSans}
                             />
                             
                             <ResultDisplay
                                 title="Shortened Gemini"
                                 content={geminiShortened}
-                                headerFont={kanit}
-                                contentFont={montserrat}
+                                headerFont={outfit}
+                                contentFont={plusJakartaSans}
                             />
                             
                             <ResultDisplay
                                 title="Friendly Gemini"
                                 content={geminiRephrasedFriendly}
-                                headerFont={kanit}
-                                contentFont={montserrat}
+                                headerFont={outfit}
+                                contentFont={plusJakartaSans}
                             />
                             
                             <ResultDisplay
                                 title="Formal Gemini"
                                 content={geminiRephrasedFormal}
-                                headerFont={kanit}
-                                contentFont={montserrat}
+                                headerFont={outfit}
+                                contentFont={plusJakartaSans}
                             />
                             <Separator />
                         </div>
