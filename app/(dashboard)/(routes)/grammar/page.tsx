@@ -14,7 +14,6 @@ import { formSchema } from "./constants";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/loader";
 import { Montserrat, Kanit } from 'next/font/google';
@@ -410,41 +409,36 @@ const ConversationPage = () => {
                            <ResultDisplay
                                 title="Correct Gemini"
                                 content={geminiCorrected}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Improved Gemini"
                                 content={geminiImproved}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Shortened Gemini"
                                 content={geminiShortened}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Friendly Gemini"
                                 content={geminiRephrasedFriendly}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Formal Gemini"
                                 content={geminiRephrasedFormal}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             <Separator />
                         </div>
@@ -463,41 +457,36 @@ const ConversationPage = () => {
                            <ResultDisplay
                                 title="Correct Claude"
                                 content={claudeCorrected}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Improved Claude"
                                 content={claudeImproved}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Shortened Claude"
                                 content={claudeShortened}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Friendly Claude"
                                 content={claudeRephrasedFriendly}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             
                             <ResultDisplay
                                 title="Formal Claude"
                                 content={claudeRephrasedFormal}
-                                kanit={kanit}
-                                montserrat={montserrat}
-                                CopyIcon={CopyIcon}
+                                headerFont={kanit}
+                                contentFont={montserrat}
                             />
                             <Separator />
                         </div>
