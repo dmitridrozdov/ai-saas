@@ -446,10 +446,31 @@ const ConversationPage = () => {
                 </div>
                 <div className="space-y-4 mt-4">
                     {!isLoading && geminiResult !== '' && (
-                        <div className="flex flex-col gap-y-4">
-                            <p className={cn("text-xl text-blue-500", requestResult.className)}>Gemini Results</p>
-                            <Markdown text={geminiResult} />
-                            <Separator />
+                        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 via-white to-blue-50/50 p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-blue-100">
+                            {/* Decorative background elements */}
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl" />
+                            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-500/10 to-transparent rounded-full blur-2xl" />
+                            
+                            {/* Header */}
+                            <div className="relative flex items-center gap-3 mb-5">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/30">
+                                    <Sparkles size={20} className="text-white" />
+                                </div>
+                                <h3 className={cn(
+                                    "text-2xl font-semibold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent",
+                                    requestResult.className
+                                )}>
+                                    Gemini Results
+                                </h3>
+                            </div>
+
+                            {/* Content */}
+                            <div className="relative bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-blue-100/50 shadow-sm">
+                                <Markdown text={geminiResult} />
+                            </div>
+
+                            {/* Decorative bottom accent */}
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
                         </div>
                     )}
                     {!isLoading && geminiResult !== '' && (
