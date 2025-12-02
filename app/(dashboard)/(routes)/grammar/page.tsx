@@ -20,8 +20,8 @@ import { Montserrat, Kanit, Outfit, Inter, Plus_Jakarta_Sans } from 'next/font/g
 import { CopyIcon } from '@/components/copy-icon'
 import Markdown from "@/components/markdown";
 import { Separator } from "@/components/ui/separator";
-import {  Trash2 } from 'lucide-react';
 import ResultDisplay from "@/components/result-display";
+import { Trash2, Sparkles, Zap, Brain } from "lucide-react";
 
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 const kanit = Kanit ({ weight: '100', subsets: ['latin']})
@@ -344,58 +344,106 @@ const ConversationPage = () => {
                 bgColor="bg-white"
             />
              <div className="px-4 lg:px-8">
-                <div>
+                <div className="w-full">
                     <Form {...form}>
                         <form 
                             onSubmit={form.handleSubmit(onSubmit)} 
-                            className="rounded-sm border w-full p-4 px-3 md:px-6 focus-within:shadow-sm
-                                grid grid-cols-12 gap-2 overflow-hidden">
-                            <FormField
-                                name="prompt"
-                                render={({ field }) => (
-                                <FormItem className="col-span-12 lg:col-span-10">
-                                    <FormControl className="m-0 p-0">
-                                    <Input
-                                        className={cn("border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent", montserrat.className)}
-                                        disabled={isLoading} 
-                                        placeholder="" 
-                                        {...field}
-                                    />
-                                    </FormControl>
-                                </FormItem>
-                                )}
-                            />
-                            <div className={cn("col-span-12 lg:col-span-2 w-full flex flex-wrap gap-1 md:gap-2", montserrat.className)}>
+                            className="relative rounded-2xl border border-slate-200 bg-white w-full p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                        >
+                            {/* Decorative gradient border effect */}
+                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 via-amber-500/10 to-blue-500/10 -z-10 blur-xl" />
+                            
+                            <div className="grid grid-cols-12 gap-4">
+                                {/* Input Field */}
+                                <FormField
+                                    name="prompt"
+                                    render={({ field }) => (
+                                        <FormItem className="col-span-12 lg:col-span-9">
+                                            <FormControl className="m-0 p-0">
+                                                <div className="relative">
+                                                    <Input
+                                                        className={cn(
+                                                            "h-14 px-5 text-base bg-slate-50/50 border-slate-200 rounded-xl",
+                                                            "focus-visible:ring-2 focus-visible:ring-purple-500/20 focus-visible:border-purple-300",
+                                                            "placeholder:text-slate-400 transition-all duration-200",
+                                                            montserrat.className
+                                                        )}
+                                                        disabled={isLoading} 
+                                                        placeholder="Enter your text here..." 
+                                                        {...field}
+                                                    />
+                                                    {/* Input accent line */}
+                                                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
+                                                </div>
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
 
-                                 <button
-                                    type="submit" 
-                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors"
-                                >
-                                    G
-                                </button>
+                                {/* Action Buttons */}
+                                <div className={cn(
+                                    "col-span-12 lg:col-span-3 flex flex-wrap gap-2 lg:justify-end items-center",
+                                    montserrat.className
+                                )}>
+                                    {/* Gemini Button */}
+                                    <button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="group relative h-14 px-5 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                                    >
+                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
+                                        <span className="relative flex items-center gap-2">
+                                            <Sparkles size={18} />
+                                            <span className="hidden sm:inline">Gemini</span>
+                                        </span>
+                                    </button>
 
-                                <button
-                                    onClick={form.handleSubmit(claudeVerify)}
-                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors"
-                                >
-                                    CL
-                                </button>
+                                    {/* Claude Button */}
+                                    <button
+                                        type="button"
+                                        onClick={form.handleSubmit(claudeVerify)}
+                                        disabled={isLoading}
+                                        className="group relative h-14 px-5 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                                    >
+                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
+                                        <span className="relative flex items-center gap-2">
+                                            <Zap size={18} />
+                                            <span className="hidden sm:inline">Claude</span>
+                                        </span>
+                                    </button>
 
-                                 <button
-                                    onClick={form.handleSubmit(openaiVerify)}
-                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-medium transition-colors"
-                                >
-                                    OAI
-                                </button>
+                                    {/* OpenAI Button */}
+                                    <button
+                                        type="button"
+                                        onClick={form.handleSubmit(openaiVerify)}
+                                        disabled={isLoading}
+                                        className="group relative h-14 px-5 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                                    >
+                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
+                                        <span className="relative flex items-center gap-2">
+                                            <Brain size={18} />
+                                            <span className="hidden sm:inline">OpenAI</span>
+                                        </span>
+                                    </button>
 
-                                <button
-                                    onClick={form.handleSubmit(onClear)}
-                                    className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-500 hover:bg-gray-600 text-white font-medium transition-colors"
-                                >
-                                    <Trash2 size={20} />
-                                </button>
-
+                                    {/* Clear Button */}
+                                    <button
+                                        type="button"
+                                        onClick={form.handleSubmit(onClear)}
+                                        disabled={isLoading}
+                                        className="group h-14 w-14 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-sm hover:shadow-md"
+                                    >
+                                        <Trash2 size={20} className="group-hover:scale-110 transition-transform duration-200" />
+                                    </button>
+                                </div>
                             </div>
+
+                            {/* Loading indicator */}
+                            {isLoading && (
+                                <div className="absolute inset-x-0 bottom-0 h-1 bg-slate-100 rounded-b-2xl overflow-hidden">
+                                    <div className="h-full bg-gradient-to-r from-purple-500 via-amber-500 to-blue-500 animate-pulse" />
+                                </div>
+                            )}
                         </form>
                     </Form>
                 </div>
