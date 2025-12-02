@@ -564,9 +564,15 @@ const ConversationPage = () => {
                 </div>                   
                 <div className="space-y-4 mt-4">
                     {isLoading && (
-                        <div className="p-8 rounded-sm w-full flex items-center justify-center bg-white">
-                            <Loader />
+                    <div className="relative p-12 rounded-2xl w-full flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50 border border-slate-100 shadow-lg overflow-hidden">
+                        {/* Animated background pattern */}
+                        <div className="absolute inset-0 opacity-30">
+                        <div className="absolute top-0 left-0 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+                        <div className="absolute bottom-0 right-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
                         </div>
+                        
+                        <Loader />
+                    </div>
                     )}
                     {!isLoading && result !== '' && (
                         <div className="flex flex-col gap-y-4">
