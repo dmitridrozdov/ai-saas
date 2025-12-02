@@ -394,7 +394,6 @@ const ConversationPage = () => {
                                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
                                         <span className="relative flex items-center gap-2">
                                             <Sparkles size={18} />
-                                            <span className="hidden sm:inline">Gemini</span>
                                         </span>
                                     </button>
 
@@ -408,7 +407,6 @@ const ConversationPage = () => {
                                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
                                         <span className="relative flex items-center gap-2">
                                             <Zap size={18} />
-                                            <span className="hidden sm:inline">Claude</span>
                                         </span>
                                     </button>
 
@@ -422,7 +420,6 @@ const ConversationPage = () => {
                                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
                                         <span className="relative flex items-center gap-2">
                                             <Brain size={18} />
-                                            <span className="hidden sm:inline">OpenAI</span>
                                         </span>
                                     </button>
 
