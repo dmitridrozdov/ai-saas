@@ -1,9 +1,7 @@
-import { auth } from "@clerk/nextjs";
+import { getAuth } from '@clerk/nextjs/server';
+import { get } from 'http';
 import { NextResponse } from "next/server";
 import { Configuration, OpenAIApi } from "openai";
-
-// import { checkSubscription } from "@/lib/subscription";
-// import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -15,7 +13,7 @@ export async function POST(
   req: Request
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = getAuth(req as any);
     const body = await req.json();
     const { prompt, amount = 1, resolution = "512x512" } = body;
 
