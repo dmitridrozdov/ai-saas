@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     const currentContent = fs.readFileSync(filePath, 'utf-8');
 
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash"});
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"});
 
     const result = await model.generateContent(prompt + currentContent + "\`\`\`");
     const response = await result.response;
