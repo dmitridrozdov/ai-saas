@@ -1,6 +1,7 @@
-import { auth } from "@clerk/nextjs";
+import { getAuth } from '@clerk/nextjs/server';
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { get } from 'http';
 
 const prefixPrompt = "You are a code generator. You must answer only in markdown code snippets. Use code comments for explanations. "
 
@@ -8,7 +9,7 @@ export async function POST(
   req: Request
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = getAuth(req as any); 
     const body = await req.json();
     const { messages  } = body;
 
@@ -21,7 +22,7 @@ export async function POST(
     }
 
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash"});
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"});
 
     const result = await model.generateContent(prefixPrompt + messages[0].content);
     const response = await result.response;
