@@ -13,8 +13,13 @@ export async function POST(
       return new NextResponse("Messages are required", { status: 400 });
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash"});
+    const googleApiKey = process.env.GOOGLE_API_KEY;
+
+    const genAI = new GoogleGenerativeAI(googleApiKey!);
+
+    // console.log("--- DEBUG: Current API Key starts with: ", googleApiKey ? googleApiKey : 'NO KEY');
+
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"});
 
     const result = await model.generateContent(grammarPrompt + messages[0].content);
     const response = await result.response;
