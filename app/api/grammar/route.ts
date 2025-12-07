@@ -1,9 +1,7 @@
-import { auth } from "@clerk/nextjs";
+// import { auth } from "@clerk/nextjs";
+import { getAuth } from '@clerk/nextjs/server';
 import { NextResponse } from "next/server";
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
-
-// import { checkSubscription } from "@/lib/subscription";
-// import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -21,7 +19,7 @@ export async function POST(
   req: Request
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = getAuth(req as any);
     const body = await req.json();
     const { messages  } = body;
 
