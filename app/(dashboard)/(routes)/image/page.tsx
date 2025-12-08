@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Loader } from "@/components/loader";
 import { Empty } from "@/components/ui/empty";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { cn } from "@/lib/utils";
 import { Montserrat } from 'next/font/google';
@@ -109,7 +109,7 @@ const PhotoPage = () => {
               name="amount"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-2">
-                  <Select 
+                  {/* <Select 
                     disabled={isLoading} 
                     onValueChange={field.onChange} 
                     value={field.value} 
@@ -130,7 +130,7 @@ const PhotoPage = () => {
                         </SelectItem>
                       ))}
                     </SelectContent>
-                  </Select>
+                  </Select> */}
                 </FormItem>
               )}
             />
@@ -139,7 +139,7 @@ const PhotoPage = () => {
               name="resolution"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-2">
-                  <Select 
+                  {/* <Select 
                     disabled={isLoading} 
                     onValueChange={field.onChange} 
                     value={field.value} 
@@ -160,7 +160,7 @@ const PhotoPage = () => {
                         </SelectItem>
                       ))}
                     </SelectContent>
-                  </Select>
+                  </Select> */}
                 </FormItem>
               )}
             />
