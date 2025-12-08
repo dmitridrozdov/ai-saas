@@ -14,10 +14,7 @@ export async function POST(
     }
 
     const googleApiKey = process.env.GOOGLE_API_KEY;
-
     const genAI = new GoogleGenerativeAI(googleApiKey!);
-
-    // console.log("--- DEBUG: Current API Key starts with: ", googleApiKey ? googleApiKey : 'NO KEY');
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"});
 
