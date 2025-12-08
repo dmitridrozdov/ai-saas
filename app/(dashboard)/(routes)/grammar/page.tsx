@@ -266,7 +266,7 @@ const ConversationPage = () => {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
             
-            const response = await axios.post('https://ai-saas-self-alpha.vercel.app/api/grammargemini', { messages: newMessages });
+            const response = await axios.post('/api/grammargemini', { messages: newMessages });
 
             setGeminiResult(response.data.content)
 
