@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { grammarPrompt } from "@/constants";
 
+// ADD THIS LINE
 export const dynamic = "force-dynamic";
 
 export async function POST(
@@ -16,6 +17,15 @@ export async function POST(
     }
 
     const googleApiKey = process.env.GOOGLE_API_KEY;
+
+    // Add this check
+    if (!googleApiKey) {
+      console.error('[GOOGLE_API_KEY] Missing API key');
+      return new NextResponse("API key not configured", { status: 500 });
+    } else {
+      console.log('[GOOGLE_API_KEY] API key loaded successfully: ' + googleApiKey);
+    }
+
     const genAI = new GoogleGenerativeAI(googleApiKey!);
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"});
