@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { grammarPrompt } from "@/constants";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(
   req: Request
 ) {
