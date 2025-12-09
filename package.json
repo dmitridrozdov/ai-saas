@@ -12,7 +12,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",
     "@clerk/backend": "^0.37.0",
-    "@clerk/nextjs": "^6.36.0",
+    "@clerk/nextjs": "^6.36.1",
     "@google/generative-ai": "^0.6.0",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",
