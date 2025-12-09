@@ -1,6 +1,4 @@
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
 import {
   Controller,
   ControllerProps,
@@ -10,8 +8,24 @@ import {
   useFormContext,
 } from "react-hook-form"
 
-import { cn } from "@/lib/utils"
-import { Label } from "@/components/ui/label"
+// Utility functions for class name concatenation (assuming you'll keep this)
+// This file needs to be implemented or replaced, e.g., by a simple string join
+// import { cn } from "@/lib/utils"
+
+// Local Label component (assuming you'll keep this)
+// import { Label } from "@/components/ui/label" 
+
+// Placeholder implementations for dependencies if not provided
+const cn = (...classes: (string | false | null | undefined)[]) => classes.filter(Boolean).join(" ");
+const Label = React.forwardRef<HTMLLabelElement, React.LabelHTMLAttributes<HTMLLabelElement>>(
+  ({ className, ...props }, ref) => (
+    <label ref={ref} className={cn("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70", className)} {...props} />
+  )
+)
+Label.displayName = "Label"
+
+
+// --- Form Context Setup (No Changes) ---
 
 const Form = FormProvider
 
@@ -39,17 +53,24 @@ const FormField = <
   )
 }
 
+type FormItemContextValue = {
+  id: string
+}
+
+const FormItemContext = React.createContext<FormItemContextValue>(
+  {} as FormItemContextValue
+)
+
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
   const { getFieldState, formState } = useFormContext()
 
-  const fieldState = getFieldState(fieldContext.name, formState)
-
-  if (!fieldContext) {
-    throw new Error("useFormField should be used within <FormField>")
+  if (!fieldContext || !itemContext) {
+    throw new Error("useFormField should be used within <FormField> and <FormItem>")
   }
 
+  const fieldState = getFieldState(fieldContext.name, formState)
   const { id } = itemContext
 
   return {
@@ -62,13 +83,7 @@ const useFormField = () => {
   }
 }
 
-type FormItemContextValue = {
-  id: string
-}
-
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
-)
+// --- FormItem (No Changes) ---
 
 const FormItem = React.forwardRef<
   HTMLDivElement,
@@ -84,14 +99,16 @@ const FormItem = React.forwardRef<
 })
 FormItem.displayName = "FormItem"
 
+// --- FormLabel (REPLACED RADIX DEPENDENCY) ---
+
 const FormLabel = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+  HTMLLabelElement, // <-- Replaced typeof LabelPrimitive.Root with HTMLLabelElement
+  React.ComponentPropsWithoutRef<typeof Label> // <-- Using the local Label component's props
 >(({ className, ...props }, ref) => {
   const { error, formItemId } = useFormField()
 
   return (
-    <Label
+    <Label // Assuming '@/components/ui/label' is a standard label component
       ref={ref}
       className={cn(error && "text-destructive", className)}
       htmlFor={formItemId}
@@ -101,27 +118,45 @@ const FormLabel = React.forwardRef<
 })
 FormLabel.displayName = "FormLabel"
 
+// --- FormControl (REPLACED RADIX DEPENDENCY) ---
+
+// Replacing Slot means we can't reliably pass props to an unknown child.
+// The standard non-Radix approach is to wrap children in a Fragment and rely on
+// the form element itself to receive the necessary ref/id/aria props via the 'props' spread.
+
 const FormControl = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
+  HTMLElement, // <-- Replaced typeof Slot with a generic HTMLElement ref
+  React.HTMLAttributes<HTMLElement> // <-- Replaced ComponentPropsWithoutRef<typeof Slot> with generic HTML attributes
+>(({ children, ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
+  // We rely on the child element (e.g., <Input />) to correctly spread these props.
+  // We'll use React.cloneElement to inject the necessary props into the child.
+  
+  if (React.Children.count(children) !== 1) {
+    throw new Error("FormControl must have exactly one child element.")
+  }
+
+  const child = React.Children.only(children) as React.ReactElement;
+
   return (
-    <Slot
-      ref={ref}
-      id={formItemId}
-      aria-describedby={
-        !error
+    <>
+      {React.cloneElement(child, {
+        ref,
+        id: formItemId,
+        'aria-describedby': !error
           ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
+          : `${formDescriptionId} ${formMessageId}`,
+        'aria-invalid': !!error,
+        ...props, // Spread remaining props, e.g., className, onto the child
+      })}
+    </>
   )
 })
 FormControl.displayName = "FormControl"
+
+
+// --- FormDescription (No Changes) ---
 
 const FormDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -139,6 +174,8 @@ const FormDescription = React.forwardRef<
   )
 })
 FormDescription.displayName = "FormDescription"
+
+// --- FormMessage (No Changes) ---
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
