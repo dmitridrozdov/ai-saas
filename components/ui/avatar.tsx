@@ -1,15 +1,21 @@
 "use client"
 
 import * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
-import { cn } from "@/lib/utils"
+
+// Utility functions for class name concatenation (assuming you'll keep this)
+// import { cn } from "@/lib/utils"
+
+// Placeholder implementation for cn if not provided in the scope
+const cn = (...classes: (string | false | null | undefined)[]) => classes.filter(Boolean).join(" ");
+
+// --- Avatar Root Component (Replacement for AvatarPrimitive.Root) ---
 
 const Avatar = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
+  HTMLDivElement, // Ref type changed from Radix to HTMLDivElement
+  React.HTMLAttributes<HTMLDivElement> // Props type changed from Radix to standard HTML div attributes
 >(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Root
+  <div // Replaced AvatarPrimitive.Root with a standard <div>
     ref={ref}
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
@@ -18,25 +24,30 @@ const Avatar = React.forwardRef<
     {...props}
   />
 ))
-Avatar.displayName = AvatarPrimitive.Root.displayName
+// Set a display name for better debugging, referencing the component's name
+Avatar.displayName = "Avatar"
+
+// --- Avatar Image Component (Replacement for AvatarPrimitive.Image) ---
 
 const AvatarImage = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+  HTMLImageElement, // Ref type changed from Radix to HTMLImageElement
+  React.ImgHTMLAttributes<HTMLImageElement> // Props type changed from Radix to standard HTML img attributes
 >(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
+  <img // Replaced AvatarPrimitive.Image with a standard <img>
     ref={ref}
     className={cn("aspect-square h-full w-full", className)}
     {...props}
   />
 ))
-AvatarImage.displayName = AvatarPrimitive.Image.displayName
+AvatarImage.displayName = "AvatarImage"
+
+// --- Avatar Fallback Component (Replacement for AvatarPrimitive.Fallback) ---
 
 const AvatarFallback = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Fallback>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+  HTMLDivElement, // Ref type changed from Radix to HTMLDivElement
+  React.HTMLAttributes<HTMLDivElement> // Props type changed from Radix to standard HTML div attributes
 >(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Fallback
+  <div // Replaced AvatarPrimitive.Fallback with a standard <div>
     ref={ref}
     className={cn(
       "flex h-full w-full items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white",
@@ -45,6 +56,6 @@ const AvatarFallback = React.forwardRef<
     {...props}
   />
 ))
-AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+AvatarFallback.displayName = "AvatarFallback"
 
 export { Avatar, AvatarImage, AvatarFallback }
