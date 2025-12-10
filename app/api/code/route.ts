@@ -1,4 +1,4 @@
-import { getAuth } from '@clerk/nextjs/server';
+
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { get } from 'http';
@@ -9,13 +9,8 @@ export async function POST(
   req: Request
 ) {
   try {
-    const { userId } = getAuth(req as any); 
     const body = await req.json();
     const { messages  } = body;
-
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
 
     if (!messages) {
       return new NextResponse("Messages are required", { status: 400 });
