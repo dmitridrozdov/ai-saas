@@ -2,7 +2,7 @@
 
 import TypewriterComponent from "typewriter-effect";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
+// import { useAuth } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '700', subsets: ['latin']});
 
 export const LandingHero = () => {
-  const { isSignedIn } = useAuth();
+  // const { isSignedIn } = useAuth();
 
   return (
     <div className={cn("text-black font-bold py-36 text-center space-y-5", kanit.className)}>
@@ -37,7 +37,7 @@ export const LandingHero = () => {
         Generate Content Rapidly with AI
       </div>
       <div>
-        <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
+        <Link href="/dashboard">
           <Button variant="premium" className={cn("md:text-lg p-4 md:p-6 rounded-full font-semibold", montserrat.className)}>
             Start For Free
           </Button>
