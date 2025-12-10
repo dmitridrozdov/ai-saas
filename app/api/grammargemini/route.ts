@@ -21,9 +21,7 @@ export async function POST(
     if (!googleApiKey) {
       console.error('[GOOGLE_API_KEY] Missing API key');
       return new NextResponse("API key not configured", { status: 500 });
-    } else {
-      console.log('[GOOGLE_API_KEY] API key loaded successfully: ' + googleApiKey);
-    }
+    } 
 
     const genAI = new GoogleGenerativeAI(googleApiKey!);
 
