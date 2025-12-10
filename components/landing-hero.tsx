@@ -2,7 +2,6 @@
 
 import TypewriterComponent from "typewriter-effect";
 import Link from "next/link";
-// import { useAuth } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,6 @@ const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] });
 const kanit = Kanit ({ weight: '700', subsets: ['latin']});
 
 export const LandingHero = () => {
-  // const { isSignedIn } = useAuth();
 
   return (
     <div className={cn("text-black font-bold py-36 text-center space-y-5", kanit.className)}>
