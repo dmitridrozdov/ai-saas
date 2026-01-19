@@ -7,6 +7,9 @@ import { Montserrat, Kanit } from 'next/font/google';
 import { Mic, Trash2, Bot, SpellCheck, HelpCircle, FileText } from 'lucide-react';
 import CustomMarkdown from './custom-markdown';
 
+import { toast } from 'react-hot-toast';
+import { Copy, Check } from 'lucide-react';
+
 const montserrat = Montserrat ({ weight: '300', subsets: ['latin'] })
 const kanit = Kanit({ weight: '500', subsets: ['latin'] })
 
@@ -52,10 +55,34 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
   const [aiOpinion, setAiOpinion] = useState<string>('');
   const [aiSummary, setAiSummary] = useState<string>('');
   const [aiGrammarCheck, setAiGrammarCheck] = useState<string>('');
+
+  const [copied, setCopied] = React.useState(false);
   
   const recognitionRef = useRef<any>(null);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const shouldRestartRef = useRef<boolean>(false);
+
+  const handleCopyTranscript = async () => {
+    if (!transcript) {
+      toast.error('No text to copy');
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(transcript);
+      setCopied(true);
+      toast.success('Copied to clipboard!');
+      
+      // Reset copied state after 2 seconds
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+      toast.error('Failed to copy to clipboard');
+    }
+  };
+
 
   useEffect(() => {
     // Check if speech recognition is supported
@@ -391,7 +418,7 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
       )}
 
       <div className="space-y-4">
-        <div>
+        {/* <div>
           <h3 className={cn("text-gray-900 whitespace-pre-wrap text-xl", kanit.className)}>Transcript:</h3>
           <div className="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
             <p className={cn("text-gray-900 whitespace-pre-wrap", montserrat.className)}>
@@ -406,7 +433,66 @@ const MeetingAssistant: React.FC<SpeechRecognitionComponentProps> = ({
               </p>
             )}
           </div>
+        </div> */}
+
+        <div 
+          onClick={handleCopyTranscript}
+          className={cn(
+            "group relative min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-lg transition-all duration-200",
+            transcript && "cursor-pointer hover:bg-gray-100 hover:border-gray-300 hover:shadow-md"
+          )}
+        >
+          {/* Copy indicator - only show when there's content */}
+          {transcript && (
+            <div className="absolute top-3 right-3 z-10">
+              <div className={cn(
+                "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-200 text-xs font-medium",
+                copied 
+                  ? "bg-green-100 text-green-700" 
+                  : "bg-white text-gray-500 opacity-0 group-hover:opacity-100 shadow-sm"
+              )}>
+                {copied ? (
+                  <>
+                    <Check size={14} />
+                    <span>Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy size={14} />
+                    <span>Click to copy</span>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Hover effect overlay */}
+          {transcript && (
+            <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
+          )}
+
+          {/* Content */}
+          <div className="relative">
+            <p className={cn("text-gray-900 whitespace-pre-wrap", montserrat.className)}>
+              {transcript}
+              {interimTranscript && (
+                <span className="text-gray-500 italic">{interimTranscript}</span>
+              )}
+            </p>
+            {!transcript && !interimTranscript && (
+              <p className={cn("text-gray-500 whitespace-pre-wrap", montserrat.className)}>
+                Click &apos;Start Listening&apos; and begin speaking...
+              </p>
+            )}
+          </div>
+
+          {/* Bottom accent line - only show on hover when there's content */}
+          {transcript && (
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+          )}
         </div>
+
+
       </div>
       <div className="space-y-4">
         <div>
