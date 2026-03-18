@@ -135,3 +135,17 @@ body,
     100% { transform: translateX(100%); }
   }
 
+.complex-grid {
+  /* The "Sub-grid" (Smaller squares) */
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px),
+    /* The "Main grid" (Larger squares) */
+    linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px);
+
+  /* Set the sizes: Minor grid at 20px, Major grid at 100px */
+  background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+  background-color: #ffffff;
+}
+
