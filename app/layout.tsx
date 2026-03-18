@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
       <html lang="en" suppressHydrationWarning>
         <CrispProvider />
-        <body className={`${inter.className} bg-grid-pattern [background-size:50px_50px]`} suppressHydrationWarning>
+        <body className={`${inter.className} complex-grid [background-size:50px_50px]`} suppressHydrationWarning>
           <ModalProvider />
           <ToasterProvider />
           {children}
